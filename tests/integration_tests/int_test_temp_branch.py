@@ -15,7 +15,8 @@ from tests.helpers.repo_utils import (
     make_repo_dirty,
     readonly_handler,
 )
-from torque import branch_utils, shell
+from torque import shell
+from torque.branch import branch_context, branch_utils
 from torque.constants import UNCOMMITTED_BRANCH_NAME
 
 logging.getLogger("git").setLevel(logging.WARNING)
@@ -45,10 +46,10 @@ class GitMagicTests(unittest.TestCase):
     @patch("torque.utils.BlueprintRepo.is_current_branch_synced")
     @patch.object(branch_utils, "create_remote_branch")
     @patch("torque.blueprints.BlueprintsManager.validate")
-    @patch.object(branch_utils, "delete_temp_remote_branch")
+    @patch.object(branch_context, "delete_temp_remote_branch")
     @patch("pkg_resources.get_distribution")
     @patch("torque.shell.BootstrapHelper.get_connection_params")
-    @patch("torque.branch_utils.examine_blueprint_working_branch")
+    @patch("torque.branch.branch_utils.debug_output_about_repo_examination")
     @patch("torque.shell.exit")
     def test_blueprint_validate_uncommitted_untracked(self, exit, ex, get_c, get_d, del_t, bp_validate, create_r, is_c):
         # Arrange
@@ -74,12 +75,12 @@ class GitMagicTests(unittest.TestCase):
     @patch("torque.utils.BlueprintRepo.is_current_branch_synced")
     @patch.object(branch_utils, "create_remote_branch")
     @patch("torque.blueprints.BlueprintsManager.validate")
-    @patch.object(branch_utils, "delete_temp_remote_branch")
+    @patch.object(branch_context, "delete_temp_remote_branch")
     @patch("pkg_resources.get_distribution")
     @patch("torque.shell.BootstrapHelper.get_connection_params")
-    @patch("torque.branch_utils.examine_blueprint_working_branch")
+    @patch("torque.branch.branch_utils.debug_output_about_repo_examination")
     @patch("torque.shell.exit")
-    def test_blueprint_validate_uncommitted(self, exit, ex, get_c, get_d, del_t, bp_validate, create_r, is_c):
+    def test_blueprint_validate_uncommitted(self, exit, examination, get_c, get_d, del_t, bp_validate, create_r, is_c):
         # Arrange
         bp_validate.return_value = Mock(errors="")
 
@@ -103,12 +104,12 @@ class GitMagicTests(unittest.TestCase):
     @patch("torque.utils.BlueprintRepo.is_current_branch_synced")
     @patch.object(branch_utils, "create_remote_branch")
     @patch("torque.blueprints.BlueprintsManager.validate")
-    @patch.object(branch_utils, "delete_temp_remote_branch")
+    @patch.object(branch_context, "delete_temp_remote_branch")
     @patch("pkg_resources.get_distribution")
     @patch("torque.shell.BootstrapHelper.get_connection_params")
-    @patch("torque.branch_utils.examine_blueprint_working_branch")
+    @patch("torque.branch.branch_utils.debug_output_about_repo_examination")
     @patch("torque.shell.exit")
-    def test_blueprint_validate_committed_untracked(self, exit, ex, get_c, get_d, del_t, bp_validate, create_r, is_c):
+    def test_blueprint_validate_committed_untracked(self, exit, exam, get_c, get_d, del_t, bp_validate, create_r, is_c):
         # Arrange
         bp_validate.return_value = Mock(errors="")
 
@@ -132,12 +133,12 @@ class GitMagicTests(unittest.TestCase):
     @patch("torque.utils.BlueprintRepo.is_current_branch_synced")
     @patch.object(branch_utils, "create_remote_branch")
     @patch("torque.blueprints.BlueprintsManager.validate")
-    @patch.object(branch_utils, "delete_temp_remote_branch")
+    @patch.object(branch_context, "delete_temp_remote_branch")
     @patch("pkg_resources.get_distribution")
     @patch("torque.shell.BootstrapHelper.get_connection_params")
-    @patch("torque.branch_utils.examine_blueprint_working_branch")
+    @patch("torque.branch.branch_utils.debug_output_about_repo_examination")
     @patch("torque.shell.exit")
-    def test_blueprint_validate_committed(self, exit, ex, get_c, get_d, del_t, bp_validate, create_r, is_c):
+    def test_blueprint_validate_committed(self, exit, exam, get_c, get_d, del_t, bp_validate, create_r, is_c):
         # Arrange
         bp_validate.return_value = Mock(errors="")
 

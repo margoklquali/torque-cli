@@ -1,4 +1,5 @@
 import logging
+import os
 from urllib.parse import urljoin
 
 from requests import Response, Session
@@ -25,6 +26,9 @@ class TorqueClient(object):
         password: str = None,
         session: TorqueSession = TorqueSession(),
     ):
+
+        if os.environ.get("TORQUE_HOSTNAME"):
+            torque_host = os.environ["TORQUE_HOSTNAME"]
 
         if account:
             self.base_url = urljoin(f"{torque_host_prefix}{account}.{torque_host}", self.API_URL)

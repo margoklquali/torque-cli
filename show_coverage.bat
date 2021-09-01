@@ -1,2 +1,2 @@
-coverage run --source=colony -m unittest discover
+coverage run --source=torque -m unittest discover
 coverage report -m --skip-covered

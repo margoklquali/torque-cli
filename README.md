@@ -79,6 +79,14 @@ export COLONY_SPACE = demo_space
 export COLONY_ACCOUNT = MYACCOUNT
 ```
 
+### Additional environment variables
+
+It is possible to switch the client to different Colony instance setting custom API host name
+
+```bash
+export TORQUE_HOSTNAME = "torque.example.com"
+```
+
 
 ## Basic Usage
 

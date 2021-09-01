@@ -20,8 +20,8 @@ Pull requests e the best way to propose changes to the codebase (we use [Github 
 5. Make sure your code lints.
 6. Issue that pull request!
 
-## Report bugs using Github's [issues](https://github.com/QualiSystemsLab/colony-cli/issues)
-We use GitHub issues to track public bugs. Report a bug by [opening a new issue](https://github.com/QualiSystemsLab/colony-cli/issues); it's that easy!
+## Report bugs using Github's [issues](https://github.com/QualiTorque/torque-cli/issues)
+We use GitHub issues to track public bugs. Report a bug by [opening a new issue](https://github.com/QualiTorque/torque-cli/issues); it's that easy!
 
 ## Write bug reports with detail, background, and sample code
 

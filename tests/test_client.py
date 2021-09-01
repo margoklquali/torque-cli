@@ -1,4 +1,6 @@
+import os
 import unittest
+from unittest import mock
 
 from torque.client import TorqueClient
 
@@ -11,6 +13,12 @@ class TestClient(unittest.TestCase):
     def test_default_api_path(self):
         client = TorqueClient()
         expected = "https://qtorque.io/api/"
+        self.assertEqual(client.base_url, expected)
+
+    @mock.patch.dict(os.environ, {"TORQUE_HOSTNAME": "example.com"})
+    def test_default_api_path_custom_url(self):
+        client = TorqueClient()
+        expected = "https://example.com/api/"
         self.assertEqual(client.base_url, expected)
 
     def test_request_wrong_method(self):

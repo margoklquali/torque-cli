@@ -1,16 +1,16 @@
 import unittest
 
-from colony.client import ColonyClient
+from torque.client import TorqueClient
 
 
 class TestClient(unittest.TestCase):
     def setUp(self) -> None:
-        self.client = ColonyClient()
-        self.client_with_account = ColonyClient(account="my_account")
+        self.client = TorqueClient()
+        self.client_with_account = TorqueClient(account="my_account")
 
     def test_default_api_path(self):
-        client = ColonyClient()
-        expected = "https://cloudshellcolony.com/api/"
+        client = TorqueClient()
+        expected = "https://qtorque.io/api/"
         self.assertEqual(client.base_url, expected)
 
     def test_request_wrong_method(self):
@@ -19,7 +19,7 @@ class TestClient(unittest.TestCase):
             self.client.request(endpoint=endpoint, method="UPDATE")
 
     def test_if_account_provided_client_base_url_includes_it(self):
-        self.assertEqual(self.client_with_account.base_url, "https://my_account.cloudshellcolony.com/api/")
+        self.assertEqual(self.client_with_account.base_url, "https://my_account.qtorque.io/api/")
 
 
 if __name__ == "__main__":

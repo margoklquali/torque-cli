@@ -2,15 +2,15 @@ import logging
 import os
 from configparser import ConfigParser, ParsingError
 
-from colony.constants import ColonyConfigKeys
-from colony.exceptions import ConfigError, ConfigFileMissingError
+from torque.constants import TorqueConfigKeys
+from torque.exceptions import ConfigError, ConfigFileMissingError
 
-DEFAULT_CONFIG_PATH = "~/.colony/config"
+DEFAULT_CONFIG_PATH = "~/.torque/config"
 
 logger = logging.getLogger(__name__)
 
 
-class ColonyConfigProvider(object):
+class TorqueConfigProvider(object):
     def __init__(self, filename: str = ""):
         self.filename = filename or DEFAULT_CONFIG_PATH
         path = os.path.expandvars(self.filename)
@@ -28,7 +28,7 @@ class ColonyConfigProvider(object):
         profile = profile_name or "default"
         self._validate_profile_exists_in_config(config, profile)
 
-        if not all(k in config[profile] for k in (ColonyConfigKeys.TOKEN, ColonyConfigKeys.SPACE)):
+        if not all(k in config[profile] for k in (TorqueConfigKeys.TOKEN, TorqueConfigKeys.SPACE)):
             raise ConfigError(
                 "Missing configuration settings. Profile must contain these settings: `token` and `space`"
             )
@@ -49,10 +49,10 @@ class ColonyConfigProvider(object):
             if not self.config_obj.has_section(profile_name):
                 self.config_obj.add_section(profile_name)
 
-            self.config_obj.set(profile_name, ColonyConfigKeys.SPACE, space)
-            self.config_obj.set(profile_name, ColonyConfigKeys.TOKEN, token)
+            self.config_obj.set(profile_name, TorqueConfigKeys.SPACE, space)
+            self.config_obj.set(profile_name, TorqueConfigKeys.TOKEN, token)
             if account:
-                self.config_obj.set(profile_name, ColonyConfigKeys.ACCOUNT, account)
+                self.config_obj.set(profile_name, TorqueConfigKeys.ACCOUNT, account)
 
             self._save_config_to_file()
 

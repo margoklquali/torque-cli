@@ -1,10 +1,10 @@
 from requests import Session
 
 
-class ColonySession(Session):
+class TorqueSession(Session):
     def __init__(self):
-        """Creates new Colony Session"""
-        super(ColonySession, self).__init__()
+        """Creates new Torque Session"""
+        super(TorqueSession, self).__init__()
 
         self.headers.update({"Accept": "application/json", "Accept-Charset": "utf-8"})
 

@@ -1,6 +1,6 @@
 import unittest
 
-from colony import utils
+from torque import utils
 
 
 class TestParseParamString(unittest.TestCase):

@@ -4,11 +4,11 @@ from unittest.mock import Mock, patch
 
 from docopt import DocoptExit
 
-from colony.commands.base import BaseCommand
-from colony.commands.bp import BlueprintsCommand
-from colony.commands.configure import ConfigureCommand
-from colony.commands.sb import SandboxesCommand
-from colony.exceptions import ConfigFileMissingError
+from torque.commands.base import BaseCommand
+from torque.commands.bp import BlueprintsCommand
+from torque.commands.configure import ConfigureCommand
+from torque.commands.sb import SandboxesCommand
+from torque.exceptions import ConfigFileMissingError
 
 
 class TestBaseCommand(unittest.TestCase):
@@ -40,8 +40,8 @@ class TestBaseCommand(unittest.TestCase):
 class TestBlueprintCommand(unittest.TestCase):
     def test_base_help_usage_line(self):
         expected_usage = """usage:
-        colony (bp | blueprint) validate <name> [options]
-        colony (bp | blueprint) [--help]"""
+        torque (bp | blueprint) validate <name> [options]
+        torque (bp | blueprint) [--help]"""
 
         with self.assertRaises(DocoptExit) as ctx:
             _ = BlueprintsCommand(command_args=[])
@@ -64,11 +64,11 @@ class TestBlueprintCommand(unittest.TestCase):
 class TestSandboxCommand(unittest.TestCase):
     def test_base_help_usage_line(self):
         expected_usage = """usage:
-        colony (sb | sandbox) start <blueprint_name> [options]
-        colony (sb | sandbox) status <sandbox_id>
-        colony (sb | sandbox) end <sandbox_id>
-        colony (sb | sandbox) list [--filter={all|my|auto}] [--show-ended] [--count=<N>]
-        colony (sb | sandbox) [--help]"""
+        torque (sb | sandbox) start <blueprint_name> [options]
+        torque (sb | sandbox) status <sandbox_id>
+        torque (sb | sandbox) end <sandbox_id>
+        torque (sb | sandbox) list [--filter={all|my|auto}] [--show-ended] [--count=<N>]
+        torque (sb | sandbox) [--help]"""
 
         with self.assertRaises(DocoptExit) as ctx:
             _ = SandboxesCommand(command_args=[])
@@ -116,10 +116,10 @@ class TestSandboxCommand(unittest.TestCase):
 class TestConfigureCommand(unittest.TestCase):
     def test_base_help_usage_line(self):
         expected_usage = """usage:
-        colony configure set
-        colony configure list
-        colony configure remove <profile>
-        colony configure [--help|-h]"""
+        torque configure set
+        torque configure list
+        torque configure remove <profile>
+        torque configure [--help|-h]"""
 
         with self.assertRaises(DocoptExit) as ctx:
             _ = ConfigureCommand(command_args=[])
@@ -133,8 +133,8 @@ class TestConfigureCommand(unittest.TestCase):
         for action in command.get_actions_table():
             self.assertIn(action, expected_actions)
 
-    @patch("colony.commands.configure.ColonyConfigProvider")
-    @patch("colony.commands.configure.GlobalInputParser")
+    @patch("torque.commands.configure.TorqueConfigProvider")
+    @patch("torque.commands.configure.GlobalInputParser")
     def test_configure_list(self, global_input_parser, config_provider):
         # arrange
         args = "configure list".split()
@@ -148,8 +148,8 @@ class TestConfigureCommand(unittest.TestCase):
         self.assertTrue(result)
         command.message.assert_called_once()
 
-    @patch("colony.commands.configure.ColonyConfigProvider")
-    @patch("colony.commands.configure.GlobalInputParser")
+    @patch("torque.commands.configure.TorqueConfigProvider")
+    @patch("torque.commands.configure.GlobalInputParser")
     def test_configure_list_missing_config(self, global_input_parser, config_provider):
         # arrange
         config_provider.return_value.load_all.side_effect = ConfigFileMissingError()
@@ -160,9 +160,9 @@ class TestConfigureCommand(unittest.TestCase):
         with self.assertRaises(DocoptExit):
             command.do_list()
 
-    @patch("colony.commands.configure.ConfigureListView")
-    @patch("colony.commands.configure.ColonyConfigProvider")
-    @patch("colony.commands.configure.GlobalInputParser")
+    @patch("torque.commands.configure.ConfigureListView")
+    @patch("torque.commands.configure.TorqueConfigProvider")
+    @patch("torque.commands.configure.GlobalInputParser")
     def test_configure_list_return_false_on_unexpected_error(self, global_input_parser, config_provider, list_view):
         # arrange
         args = "configure list".split()
@@ -175,8 +175,8 @@ class TestConfigureCommand(unittest.TestCase):
         # assert
         self.assertFalse(result)
 
-    @patch("colony.commands.configure.ColonyConfigProvider")
-    @patch("colony.commands.configure.GlobalInputParser")
+    @patch("torque.commands.configure.TorqueConfigProvider")
+    @patch("torque.commands.configure.GlobalInputParser")
     def test_configure_test(self, global_input_parser, config_provider):
         # arrange
         args = "configure remove profile_name".split()
@@ -189,8 +189,8 @@ class TestConfigureCommand(unittest.TestCase):
         self.assertTrue(result)
         config_provider.return_value.remove_profile.assert_called_once_with("profile_name")
 
-    @patch("colony.commands.configure.ColonyConfigProvider")
-    @patch("colony.commands.configure.GlobalInputParser")
+    @patch("torque.commands.configure.TorqueConfigProvider")
+    @patch("torque.commands.configure.GlobalInputParser")
     def test_configure_test_returns_false_delete_error(self, global_input_parser, config_provider):
         # arrange
         args = "configure remove profile_name".split()

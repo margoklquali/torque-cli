@@ -1,6 +1,6 @@
 from typing import Dict, List
 
-from colony.constants import ColonyConfigKeys
+from torque.constants import TorqueConfigKeys
 
 
 class ReleaseInfoBuilder:
@@ -40,9 +40,9 @@ class ConfigBuilder:
         self._config = {}
 
     def with_profile(self, profile_name, space, token, account=None):
-        profile_dict = {ColonyConfigKeys.SPACE: space, ColonyConfigKeys.TOKEN: token}
+        profile_dict = {TorqueConfigKeys.SPACE: space, TorqueConfigKeys.TOKEN: token}
         if account:
-            profile_dict[ColonyConfigKeys.ACCOUNT] = account
+            profile_dict[TorqueConfigKeys.ACCOUNT] = account
 
         self._config[profile_name] = profile_dict
 

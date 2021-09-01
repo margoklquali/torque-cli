@@ -14,7 +14,7 @@ jobs:
 
     - name: Validate tag version
       run: |
-        version=$(cat version.txt)        # get colony cli version
+        version=$(cat version.txt)        # get torque cli version
         tag=${GITHUB_REF/refs\/tags\//}   # get tag name
         tag="${tag:1}"                    # remove the 'v' prefix from the tag that triggered this action
         echo $version

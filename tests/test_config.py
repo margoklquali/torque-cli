@@ -3,22 +3,22 @@ import unittest
 from configparser import ConfigParser
 from unittest.mock import Mock, mock_open, patch
 
-from colony.exceptions import ConfigError, ConfigFileMissingError
-from colony.services.config import ColonyConfigProvider
+from torque.exceptions import ConfigError, ConfigFileMissingError
+from torque.services.config import TorqueConfigProvider
 
 
 class TestConfigProvider(unittest.TestCase):
     def setUp(self) -> None:
         test_config_file = os.path.abspath(os.path.expanduser(os.path.expandvars("tests/fixtures/test_config")))
-        self.provider = ColonyConfigProvider(filename=test_config_file)
+        self.provider = TorqueConfigProvider(filename=test_config_file)
 
     def test_correct_default_path(self):
-        self.assertEqual(ColonyConfigProvider().filename, "~/.colony/config")
+        self.assertEqual(TorqueConfigProvider().filename, "~/.torque/config")
 
     def test_filename_not_exist(self):
         wrong_file_name = "tests/fixtures/test_config_wrong"
         with self.assertRaises(ConfigFileMissingError):
-            _ = ColonyConfigProvider(filename=wrong_file_name).load_connection()
+            _ = TorqueConfigProvider(filename=wrong_file_name).load_connection()
 
     def test_raise_on_wrong_profile(self):
         wrong_profile = "fake_tester"
@@ -36,7 +36,7 @@ class TestConfigProvider(unittest.TestCase):
     def test_wrong_setting_file(self):
         filename = "tests/fixtures/wrong_config"
         with self.assertRaises(ConfigError):
-            _ = ColonyConfigProvider(filename).load_connection()
+            _ = TorqueConfigProvider(filename).load_connection()
 
     def test_wrong_settings(self):
         wrong_profile = "tester-2"
@@ -66,7 +66,7 @@ class TestConfigProvider(unittest.TestCase):
     def test_save_profile_config_doesnt_exist(self):
         # arrange
         filename = "tests/fixtures/new_config"
-        config_provider = ColonyConfigProvider(filename)
+        config_provider = TorqueConfigProvider(filename)
         config_provider._save_config_to_file = Mock()
 
         # act
@@ -83,7 +83,7 @@ class TestConfigProvider(unittest.TestCase):
     def test_save_profile_without_account_config_doesnt_exist(self):
         # arrange
         filename = "test/fixtures/new_config"
-        config_provider = ColonyConfigProvider(filename)
+        config_provider = TorqueConfigProvider(filename)
         config_provider._save_config_to_file = Mock()
 
         # act
@@ -140,7 +140,7 @@ class TestConfigProvider(unittest.TestCase):
     def test_save_profile_bad_config_file(self):
         # arrange
         filename = "tests/fixtures/wrong_config"
-        config_provider = ColonyConfigProvider(filename)
+        config_provider = TorqueConfigProvider(filename)
         config_provider._save_config_to_file = Mock()
 
         # act
@@ -177,7 +177,7 @@ class TestConfigProvider(unittest.TestCase):
     def test_remove_profile_raises_when_no_config_file(self):
         # arrange
         filename = "new_config"
-        config_provider = ColonyConfigProvider(filename)
+        config_provider = TorqueConfigProvider(filename)
         config_provider._save_config_to_file = Mock()
 
         with self.assertRaises(ConfigFileMissingError):

@@ -4,7 +4,7 @@ import os
 import yaml
 from git import InvalidGitRepositoryError, Repo
 
-from colony.exceptions import BadBlueprintRepo
+from torque.exceptions import BadBlueprintRepo
 
 logging.getLogger("git").setLevel(logging.WARNING)
 logger = logging.getLogger(__name__)

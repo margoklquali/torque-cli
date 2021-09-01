@@ -1,8 +1,8 @@
 from abc import ABC
 from typing import Dict
 
-from colony.parsers.command_input_validators import SandboxListValidator, SandboxStartInputValidator
-from colony.utils import parse_comma_separated_string
+from torque.parsers.command_input_validators import SandboxListValidator, SandboxStartInputValidator
+from torque.utils import parse_comma_separated_string
 
 
 class CommandInputParser:

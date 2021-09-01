@@ -5,7 +5,7 @@ from typing import Dict, List
 import requests
 import semantic_version
 
-from colony.commands.base import BaseCommand
+from torque.commands.base import BaseCommand
 
 logger = logging.getLogger(__name__)
 
@@ -17,7 +17,7 @@ class VersionCheckService:
     def check_for_new_version_safely(self):
         try:
             # get latest version from pypi
-            response = requests.get("https://pypi.org/pypi/colony-cli/json")
+            response = requests.get("https://pypi.org/pypi/torque-cli/json")
             pypi_project_info = response.json()
             latest_release_info = pypi_project_info["info"]
             latest_version = latest_release_info["version"]
@@ -67,7 +67,7 @@ class VersionCheckService:
         # todo - add color to the this message
         message = f"""================================================================
 New version available: {latest_version}
-Run 'pip install --upgrade colony-cli' to get the latest version
+Run 'pip install --upgrade torque-cli' to get the latest version
 ================================================================
 """
         BaseCommand.message(message)

@@ -13,14 +13,14 @@ with open(os.path.join("README.md"), encoding="utf-8") as f:
 
 
 setup(
-    name="colony-cli",
+    name="torque-cli",
     version=version_from_file,
     packages=find_packages(exclude=["*.tests", "*.tests.*", "tests.*", "tests"]),
     url="https://www.quali.com/",
     license="Apache Software License",
     author="Quali",
     author_email="support@qualisystems.com",
-    description="A command line interface for colony",
+    description="A command line interface for torque",
     long_description=long_description,
     long_description_content_type="text/markdown",
     classifiers=[
@@ -31,8 +31,8 @@ setup(
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
     ],
-    entry_points={"console_scripts": ["colony=colony.shell:main"]},
+    entry_points={"console_scripts": ["torque=torque.shell:main"]},
     install_requires=required,
-    keywords="colony sandbox cloud cloudshell quali command-line cli",
+    keywords="torque sandbox cloud cloudshell quali command-line cli",
     python_requires=">=3.6",
 )

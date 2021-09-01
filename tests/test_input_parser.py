@@ -3,7 +3,7 @@ import unittest
 from unittest import mock
 from unittest.mock import Mock
 
-from colony.parsers.global_input_parser import GlobalInputParser
+from torque.parsers.global_input_parser import GlobalInputParser
 
 
 class TestGlobalInputParser(unittest.TestCase):
@@ -19,7 +19,7 @@ class TestGlobalInputParser(unittest.TestCase):
         # assert
         self.assertEqual(token, token_mock)
 
-    @mock.patch.dict(os.environ, {"COLONY_TOKEN": "colony_token"})
+    @mock.patch.dict(os.environ, {"TORQUE_TOKEN": "torque_token"})
     def test_get_token_from_env_var(self):
         # arrange
         args = {}
@@ -29,7 +29,7 @@ class TestGlobalInputParser(unittest.TestCase):
         token = input_parser.token
 
         # assert
-        self.assertEqual(token, "colony_token")
+        self.assertEqual(token, "torque_token")
 
     def test_get_token_returns_none_when_not_exist(self):
         # arrange
@@ -54,7 +54,7 @@ class TestGlobalInputParser(unittest.TestCase):
         # assert
         self.assertEqual(space, space_mock)
 
-    @mock.patch.dict(os.environ, {"COLONY_SPACE": "colony_space"})
+    @mock.patch.dict(os.environ, {"TORQUE_SPACE": "torque_space"})
     def test_get_space_from_env_var(self):
         # arrange
         args = {}
@@ -64,7 +64,7 @@ class TestGlobalInputParser(unittest.TestCase):
         space = input_parser.space
 
         # assert
-        self.assertEqual(space, "colony_space")
+        self.assertEqual(space, "torque_space")
 
     def test_get_space_returns_none_when_not_exist(self):
         # arrange
@@ -89,7 +89,7 @@ class TestGlobalInputParser(unittest.TestCase):
         # assert
         self.assertEqual(account, account_mock)
 
-    @mock.patch.dict(os.environ, {"COLONY_ACCOUNT": "colony_account"})
+    @mock.patch.dict(os.environ, {"TORQUE_ACCOUNT": "torque_account"})
     def test_get_account_from_env_var(self):
         # arrange
         args = {}
@@ -99,7 +99,7 @@ class TestGlobalInputParser(unittest.TestCase):
         account = input_parser.account
 
         # assert
-        self.assertEqual(account, "colony_account")
+        self.assertEqual(account, "torque_account")
 
     def test_get_account_returns_none_when_not_exist(self):
         # arrange
@@ -204,7 +204,7 @@ class TestGlobalInputParser(unittest.TestCase):
         # assert
         self.assertIsNone(command_args)
 
-    @mock.patch.dict(os.environ, {"COLONY_CONFIG_PATH": "some_path"})
+    @mock.patch.dict(os.environ, {"TORQUE_CONFIG_PATH": "some_path"})
     def test_get_config_path_from_env_var(self):
         # arrange
         args = {}

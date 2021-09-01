@@ -5,18 +5,18 @@ import time
 
 import tabulate
 
-from colony.branch_utils import (
+from torque.branch_utils import (
     delete_temp_branch,
     figure_out_branches,
     revert_and_delete_temp_branch,
     revert_from_temp_branch,
     revert_wait_and_delete_temp_branch,
 )
-from colony.commands.base import BaseCommand
-from colony.constants import UNCOMMITTED_BRANCH_NAME
-from colony.parsers.command_input_validators import CommandInputValidator
-from colony.sandboxes import SandboxesManager
-from colony.utils import BlueprintRepo
+from torque.commands.base import BaseCommand
+from torque.constants import UNCOMMITTED_BRANCH_NAME
+from torque.parsers.command_input_validators import CommandInputValidator
+from torque.sandboxes import SandboxesManager
+from torque.utils import BlueprintRepo
 
 logger = logging.getLogger(__name__)
 
@@ -24,11 +24,11 @@ logger = logging.getLogger(__name__)
 class SandboxesCommand(BaseCommand):
     """
     usage:
-        colony (sb | sandbox) start <blueprint_name> [options]
-        colony (sb | sandbox) status <sandbox_id>
-        colony (sb | sandbox) end <sandbox_id>
-        colony (sb | sandbox) list [--filter={all|my|auto}] [--show-ended] [--count=<N>]
-        colony (sb | sandbox) [--help]
+        torque (sb | sandbox) start <blueprint_name> [options]
+        torque (sb | sandbox) status <sandbox_id>
+        torque (sb | sandbox) end <sandbox_id>
+        torque (sb | sandbox) list [--filter={all|my|auto}] [--show-ended] [--count=<N>]
+        torque (sb | sandbox) [--help]
 
     options:
        -h --help                        Show this message
@@ -38,13 +38,13 @@ class SandboxesCommand(BaseCommand):
 
        -i, --inputs <input_params>      The Blueprints inputs can be provided as a comma-separated list of key=value
                                         pairs. For example: key1=value1, key2=value2.
-                                        By default Colony CLI will try to take the default values for these inputs
+                                        By default Torque CLI will try to take the default values for these inputs
                                         from the Blueprint definition yaml file.
 
        -a, --artifacts <artifacts>      A comma-separated list of artifacts per application. These are relative to the
-                                        artifact repository root defined in Colony.
+                                        artifact repository root defined in Torque.
                                         Example: appName1=path1, appName2=path2.
-                                        By default Colony CLI will try to take artifacts from blueprint definition yaml
+                                        By default Torque CLI will try to take artifacts from blueprint definition yaml
                                         file.
 
        -b, --branch <branch>            Run the Blueprint version from a remote Git branch. If not provided,

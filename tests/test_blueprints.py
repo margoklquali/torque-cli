@@ -2,7 +2,7 @@ import json
 import unittest
 from unittest import mock
 
-from colony.blueprints import Blueprint
+from torque.blueprints import Blueprint
 
 
 class TestBlueprintJsonLoad(unittest.TestCase):

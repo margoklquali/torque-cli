@@ -3,22 +3,22 @@ import sys
 from colorama import Fore, Style
 from docopt import DocoptExit, docopt
 
-from colony.base import ResourceManager
-from colony.client import ColonyClient
-from colony.models.connection import ColonyConnection
-from colony.parsers.command_input_parsers import CommandInputParser
+from torque.base import ResourceManager
+from torque.client import TorqueClient
+from torque.models.connection import TorqueConnection
+from torque.parsers.command_input_parsers import CommandInputParser
 
 
 class BaseCommand(object):
     """
-    usage: colony
+    usage: torque
     """
 
     RESOURCE_MANAGER = ResourceManager
 
-    def __init__(self, command_args: list, connection: ColonyConnection = None):
+    def __init__(self, command_args: list, connection: TorqueConnection = None):
         if connection:
-            self.client = ColonyClient(space=connection.space, token=connection.token, account=connection.account)
+            self.client = TorqueClient(space=connection.space, token=connection.token, account=connection.account)
             self.manager = self.RESOURCE_MANAGER(client=self.client)
         else:
             self.client = None

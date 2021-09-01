@@ -3,15 +3,15 @@ from unittest.mock import Mock, patch
 
 from docopt import DocoptExit, docopt
 
-from colony import shell
-from colony.parsers.global_input_parser import GlobalInputParser
-from colony.shell import BootstrapHelper
+from torque import shell
+from torque.parsers.global_input_parser import GlobalInputParser
+from torque.shell import BootstrapHelper
 
 
 class MainShellTest(unittest.TestCase):
     def setUp(self) -> None:
         self.main_doc = shell.__doc__
-        self.base_usage = """Usage: colony [--space=<space>] [--token=<token>] [--account=<account>] [--profile=<profile>] [--help] [--debug]
+        self.base_usage = """Usage: torque [--space=<space>] [--token=<token>] [--account=<account>] [--profile=<profile>] [--help] [--debug]
               <command> [<args>...]"""
 
     def test_show_base_usage_line(self):
@@ -38,7 +38,7 @@ class MainShellTest(unittest.TestCase):
         input_parser = GlobalInputParser(args)
         self.assertFalse(shell.BootstrapHelper.is_help_message_requested(input_parser))
 
-    @patch("colony.shell.BootstrapHelper.should_get_connection_params")
+    @patch("torque.shell.BootstrapHelper.should_get_connection_params")
     def test_get_connection_params_no_need_for_connection(self, should_get_connection_params_mock):
         # arrange
         input_parser = Mock()
@@ -50,8 +50,8 @@ class MainShellTest(unittest.TestCase):
         # assert
         self.assertIsNone(conn)
 
-    @patch("colony.shell.ColonyConnectionProvider")
-    @patch("colony.shell.BootstrapHelper.should_get_connection_params")
+    @patch("torque.shell.TorqueConnectionProvider")
+    @patch("torque.shell.BootstrapHelper.should_get_connection_params")
     def test_get_connection_params_returns_connection(
         self, should_get_connection_params_mock, connection_provider_class_mock
     ):
@@ -95,8 +95,8 @@ class MainShellTest(unittest.TestCase):
         # assert
         self.assertFalse(result)
 
-    @patch("colony.shell.BootstrapHelper.is_config_mode")
-    @patch("colony.shell.BootstrapHelper.is_help_message_requested")
+    @patch("torque.shell.BootstrapHelper.is_config_mode")
+    @patch("torque.shell.BootstrapHelper.is_help_message_requested")
     def test_should_get_connection_params_true(self, is_help_message_requested_mock, is_config_mode_mock):
         # arrange
         input_parser = Mock()
@@ -109,8 +109,8 @@ class MainShellTest(unittest.TestCase):
         # assert
         self.assertTrue(result)
 
-    @patch("colony.shell.BootstrapHelper.is_config_mode")
-    @patch("colony.shell.BootstrapHelper.is_help_message_requested")
+    @patch("torque.shell.BootstrapHelper.is_config_mode")
+    @patch("torque.shell.BootstrapHelper.is_help_message_requested")
     def test_should_get_connection_params_false(self, is_help_message_requested_mock, is_config_mode_mock):
         # arrange 1
         input_parser = Mock()

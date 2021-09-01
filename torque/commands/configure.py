@@ -3,14 +3,14 @@ import logging
 
 from docopt import DocoptExit
 
-from colony.commands.base import BaseCommand
-from colony.constants import ColonyConfigKeys
-from colony.exceptions import ConfigFileMissingError
-from colony.parsers.global_input_parser import GlobalInputParser
-from colony.sandboxes import SandboxesManager
-from colony.services.config import ColonyConfigProvider
-from colony.view.configure_list_view import ConfigureListView
-from colony.view.view_helper import mask_token
+from torque.commands.base import BaseCommand
+from torque.constants import TorqueConfigKeys
+from torque.exceptions import ConfigFileMissingError
+from torque.parsers.global_input_parser import GlobalInputParser
+from torque.sandboxes import SandboxesManager
+from torque.services.config import TorqueConfigProvider
+from torque.view.configure_list_view import ConfigureListView
+from torque.view.view_helper import mask_token
 
 logger = logging.getLogger(__name__)
 
@@ -18,10 +18,10 @@ logger = logging.getLogger(__name__)
 class ConfigureCommand(BaseCommand):
     """
     usage:
-        colony configure set
-        colony configure list
-        colony configure remove <profile>
-        colony configure [--help|-h]
+        torque configure set
+        torque configure list
+        torque configure remove <profile>
+        torque configure [--help|-h]
 
     options:
         -h --help                   Show this message
@@ -36,11 +36,11 @@ class ConfigureCommand(BaseCommand):
         config = None
         try:
             config_file = GlobalInputParser.get_config_path()
-            config = ColonyConfigProvider(config_file).load_all()
+            config = TorqueConfigProvider(config_file).load_all()
             result_table = ConfigureListView(config).render()
 
         except ConfigFileMissingError:
-            raise DocoptExit("Config file doesn't exist. Use 'colony configure set' to configure Colony CLI.")
+            raise DocoptExit("Config file doesn't exist. Use 'torque configure set' to configure Torque CLI.")
         except Exception as e:
             logger.exception(e, exc_info=False)
             return self.die()
@@ -55,7 +55,7 @@ class ConfigureCommand(BaseCommand):
 
         try:
             config_file = GlobalInputParser.get_config_path()
-            config_provider = ColonyConfigProvider(config_file)
+            config_provider = TorqueConfigProvider(config_file)
             config_provider.remove_profile(profile_to_remove)
         except Exception as e:
             logger.exception(e, exc_info=False)
@@ -65,7 +65,7 @@ class ConfigureCommand(BaseCommand):
 
     def do_configure(self):
         config_file = GlobalInputParser.get_config_path()
-        config_provider = ColonyConfigProvider(config_file)
+        config_provider = TorqueConfigProvider(config_file)
         config = {}
         try:
             config = config_provider.load_all()
@@ -77,22 +77,22 @@ class ConfigureCommand(BaseCommand):
         profile = profile or "default"
 
         # if profile exists set current values from profile
-        current_account = config.get(profile, {}).get(ColonyConfigKeys.ACCOUNT, "")
-        current_space = config.get(profile, {}).get(ColonyConfigKeys.SPACE, "")
-        current_token = config.get(profile, {}).get(ColonyConfigKeys.TOKEN, "")
+        current_account = config.get(profile, {}).get(TorqueConfigKeys.ACCOUNT, "")
+        current_space = config.get(profile, {}).get(TorqueConfigKeys.SPACE, "")
+        current_token = config.get(profile, {}).get(TorqueConfigKeys.TOKEN, "")
 
         # read account
-        account = input(f"Colony Account (optional) [{current_account}]: ")
+        account = input(f"Torque Account (optional) [{current_account}]: ")
         account = account or current_account
 
         # read space name
-        space = input(f"Colony Space [{current_space}]: ")
+        space = input(f"Torque Space [{current_space}]: ")
         space = space or current_space
         if not space:
             return self.die("Space cannot be empty")
 
         # read token
-        token = getpass.getpass(f"Colony Token [{mask_token(current_token)}]: ")
+        token = getpass.getpass(f"Torque Token [{mask_token(current_token)}]: ")
         token = token or current_token
         if not token:
             return self.die("Token cannot be empty")

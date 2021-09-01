@@ -12,15 +12,15 @@ class GlobalInputParser:
 
     @property
     def token(self) -> str:
-        return self._args.get("--token", None) or os.environ.get("COLONY_TOKEN", None)
+        return self._args.get("--token", None) or os.environ.get("TORQUE_TOKEN", None)
 
     @property
     def space(self) -> str:
-        return self._args.get("--space", None) or os.environ.get("COLONY_SPACE", None)
+        return self._args.get("--space", None) or os.environ.get("TORQUE_SPACE", None)
 
     @property
     def account(self) -> str:
-        return self._args.get("--account", None) or os.environ.get("COLONY_ACCOUNT", None)
+        return self._args.get("--account", None) or os.environ.get("TORQUE_ACCOUNT", None)
 
     @property
     def profile(self) -> str:
@@ -40,4 +40,4 @@ class GlobalInputParser:
 
     @staticmethod
     def get_config_path() -> str:
-        return os.environ.get("COLONY_CONFIG_PATH", None)
+        return os.environ.get("TORQUE_CONFIG_PATH", None)

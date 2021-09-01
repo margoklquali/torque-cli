@@ -2,9 +2,9 @@ import unittest
 from datetime import datetime
 from unittest.mock import Mock, patch
 
-from colony import branch_utils
-from colony.constants import FINAL_SB_STATUSES, TIMEOUT, UNCOMMITTED_BRANCH_NAME
-from colony.exceptions import BadBlueprintRepo
+from torque import branch_utils
+from torque.constants import FINAL_SB_STATUSES, TIMEOUT, UNCOMMITTED_BRANCH_NAME
+from torque.exceptions import BadBlueprintRepo
 
 
 class TestStashLogicFunctions(unittest.TestCase):
@@ -119,9 +119,9 @@ class TestStashLogicFunctions(unittest.TestCase):
         self.repo.is_current_branch_synced()
 
     @patch("time.sleep", return_value=None)
-    @patch("colony.branch_utils.is_k8s_blueprint")
-    @patch("colony.branch_utils.can_temp_branch_be_deleted")
-    @patch("colony.branch_utils.delete_temp_branch")
+    @patch("torque.branch_utils.is_k8s_blueprint")
+    @patch("torque.branch_utils.can_temp_branch_be_deleted")
+    @patch("torque.branch_utils.delete_temp_branch")
     def test_wait_and_delete_temp_branch_final_stage(self, delete_temp_branch, can_temp, is_k8s, time_sleep):
         # Arrange:
         self.initialize_mock_vars()
@@ -137,9 +137,9 @@ class TestStashLogicFunctions(unittest.TestCase):
             delete_temp_branch.assert_called_with(self.repo, self.temp_branch)
 
     @patch("time.sleep", return_value=None)
-    @patch("colony.branch_utils.is_k8s_blueprint")
-    @patch("colony.branch_utils.can_temp_branch_be_deleted")
-    @patch("colony.branch_utils.delete_temp_branch")
+    @patch("torque.branch_utils.is_k8s_blueprint")
+    @patch("torque.branch_utils.can_temp_branch_be_deleted")
+    @patch("torque.branch_utils.delete_temp_branch")
     def test_wait_and_delete_temp_branch_can_be_deleted(self, delete_temp_branch, can_temp, is_k8s, time_sleep):
         # Arrange:
         self.initialize_mock_vars()
@@ -156,11 +156,11 @@ class TestStashLogicFunctions(unittest.TestCase):
         assert (datetime.now() - start_time).seconds < TIMEOUT * 60
         delete_temp_branch.assert_called_with(self.repo, self.temp_branch)
 
-    @patch("colony.branch_utils.TIMEOUT", 0)
+    @patch("torque.branch_utils.TIMEOUT", 0)
     @patch("time.sleep", return_value=None)
-    @patch("colony.branch_utils.is_k8s_blueprint")
-    @patch("colony.branch_utils.can_temp_branch_be_deleted")
-    @patch("colony.branch_utils.delete_temp_branch")
+    @patch("torque.branch_utils.is_k8s_blueprint")
+    @patch("torque.branch_utils.can_temp_branch_be_deleted")
+    @patch("torque.branch_utils.delete_temp_branch")
     def test_wait_and_delete_temp_branch_cannot_be_deleted(
         self,
         delete_temp_branch,

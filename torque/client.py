@@ -4,32 +4,32 @@ from urllib.parse import urljoin
 from requests import Response, Session
 
 from .exceptions import Unauthorized
-from .session import ColonySession
+from .session import TorqueSession
 
 logging.getLogger("urllib3").setLevel(logging.WARNING)
 
 
-class ColonyClient(object):
-    """Base class for Colony API access"""
+class TorqueClient(object):
+    """Base class for Torque API access"""
 
     API_URL = "api/"
 
     def __init__(
         self,
-        colony_host_prefix: str = "https://",
-        colony_host: str = "cloudshellcolony.com",
+        torque_host_prefix: str = "https://",
+        torque_host: str = "qtorque.io",
         space: str = None,
         token: str = None,
         account: str = None,
         email: str = None,
         password: str = None,
-        session: ColonySession = ColonySession(),
+        session: TorqueSession = TorqueSession(),
     ):
 
         if account:
-            self.base_url = urljoin(f"{colony_host_prefix}{account}.{colony_host}", self.API_URL)
+            self.base_url = urljoin(f"{torque_host_prefix}{account}.{torque_host}", self.API_URL)
         else:
-            self.base_url = urljoin(f"{colony_host_prefix}{colony_host}", self.API_URL)
+            self.base_url = urljoin(f"{torque_host_prefix}{torque_host}", self.API_URL)
 
         self.session = session
         self.space = space
@@ -39,7 +39,7 @@ class ColonyClient(object):
             self.token = token
 
         elif all([account, email, password]):
-            self.token = ColonyClient.login(account, email, password, self.session, self.base_url)
+            self.token = TorqueClient.login(account, email, password, self.session, self.base_url)
 
         self.session.init_bearer_auth(token)
 
@@ -57,8 +57,8 @@ class ColonyClient(object):
         account: str,
         email: str,
         password: str,
-        session: Session = ColonySession(),
-        endpoint: str = "https://cloudshellcolony.com/api",
+        session: Session = TorqueSession(),
+        endpoint: str = "https://qtorque.io/api",
     ):
         path = urljoin(endpoint, f"accounts/{account}/login")
         payload = {"email": email, "password": password}

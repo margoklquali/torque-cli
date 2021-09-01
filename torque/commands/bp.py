@@ -3,10 +3,10 @@ from collections import OrderedDict
 
 import tabulate
 
-from colony.blueprints import BlueprintsManager
-from colony.branch_utils import figure_out_branches, revert_and_delete_temp_branch
-from colony.commands.base import BaseCommand
-from colony.parsers.command_input_validators import CommandInputValidator
+from torque.blueprints import BlueprintsManager
+from torque.branch_utils import figure_out_branches, revert_and_delete_temp_branch
+from torque.commands.base import BaseCommand
+from torque.parsers.command_input_validators import CommandInputValidator
 
 logger = logging.getLogger(__name__)
 
@@ -14,8 +14,8 @@ logger = logging.getLogger(__name__)
 class BlueprintsCommand(BaseCommand):
     """
     usage:
-        colony (bp | blueprint) validate <name> [options]
-        colony (bp | blueprint) [--help]
+        torque (bp | blueprint) validate <name> [options]
+        torque (bp | blueprint) [--help]
 
     options:
        -b --branch <branch>     Specify the name of the remote git branch. If not provided, the CLI will attempt to

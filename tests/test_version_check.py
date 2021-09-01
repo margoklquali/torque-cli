@@ -1,13 +1,13 @@
 import unittest
 from unittest.mock import Mock, patch
 
-from colony.services.version import VersionCheckService
 from tests.helpers.builders import PyPiProjectInfoBuilder, ReleaseInfoBuilder
 from tests.helpers.utils import AnyStringWith
+from torque.services.version import VersionCheckService
 
 
 class VersionCheckServiceTests(unittest.TestCase):
-    @patch("colony.services.version.requests")
+    @patch("torque.services.version.requests")
     def test_no_newer_version_in_info(self, requests_mock):
         # arrange
         versions_checker = VersionCheckService("1.0.0")
@@ -21,7 +21,7 @@ class VersionCheckServiceTests(unittest.TestCase):
         # assert
         versions_checker._show_new_version_message.assert_not_called()
 
-    @patch("colony.services.version.requests")
+    @patch("torque.services.version.requests")
     def test_newer_version_detected_in_info(self, requests_mock):
         # arrange
         versions_checker = VersionCheckService("1.0.0")
@@ -35,7 +35,7 @@ class VersionCheckServiceTests(unittest.TestCase):
         # assert
         versions_checker._show_new_version_message.assert_called_once()
 
-    @patch("colony.services.version.requests")
+    @patch("torque.services.version.requests")
     def test_newer_version_detected_in_releases(self, requests_mock):
         # arrange
         versions_checker = VersionCheckService("1.0.0")
@@ -51,7 +51,7 @@ class VersionCheckServiceTests(unittest.TestCase):
         versions_checker._find_latest_release.assert_called_once()
         versions_checker._show_new_version_message.assert_called_once()
 
-    @patch("colony.services.version.requests")
+    @patch("torque.services.version.requests")
     def test_prerelease_in_info_and_no_new_version_in_releases(self, requests_mock):
         # arrange
         versions_checker = VersionCheckService("1.0.0")
@@ -87,7 +87,7 @@ class VersionCheckServiceTests(unittest.TestCase):
         # assert
         self.assertEqual("1.0.1", latest_version)
 
-    @patch("colony.services.version.BaseCommand")
+    @patch("torque.services.version.BaseCommand")
     def test_show_new_version_message(self, base_command_mock):
         # arrange
         versions_checker = VersionCheckService("1.0.0")
@@ -99,7 +99,7 @@ class VersionCheckServiceTests(unittest.TestCase):
         # assert
         base_command_mock.message.assert_called_once_with(AnyStringWith(latest_version))
 
-    @patch("colony.services.version.requests")
+    @patch("torque.services.version.requests")
     def test_check_for_new_version_is_safe(self, requests_mock):
         # arrange 1
         versions_checker = VersionCheckService("1.0.0")

@@ -1,6 +1,6 @@
 import unittest
 
-from colony.view.view_helper import mask_token
+from torque.view.view_helper import mask_token
 
 
 class TestViewHelper(unittest.TestCase):

@@ -1,4 +1,4 @@
-UNCOMMITTED_BRANCH_NAME = "tmp-colony-"
+UNCOMMITTED_BRANCH_NAME = "tmp-torque-"
 TIMEOUT = 30
 FINAL_SB_STATUSES = ["Active", "ActiveWithError", "Ended", "EndedWithError", "Ending"]
 
@@ -10,7 +10,7 @@ class ConstantBase:
         raise TypeError("Constants class cannot be instantiated")
 
 
-class ColonyConfigKeys(ConstantBase):
+class TorqueConfigKeys(ConstantBase):
     TOKEN = "token"
     SPACE = "space"
     ACCOUNT = "account"

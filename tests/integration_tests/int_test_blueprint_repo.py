@@ -5,8 +5,8 @@ import unittest
 
 from git import Actor, Repo
 
-from colony.exceptions import BadBlueprintRepo
-from colony.utils import BlueprintRepo
+from torque.exceptions import BadBlueprintRepo
+from torque.utils import BlueprintRepo
 
 
 class TestBlueprintRepo(unittest.TestCase):

@@ -68,20 +68,20 @@ If a profile is no longer needed it can be easily removed by running ```torque c
 The `torque configure` command will save the config file relative to your home user directory ('~/.torque/config' on Mac and Linux or in '%UserProfile%\\.torque\\config' on Windows).
 If you wish to place the config file in a different location, you can specify that location via an environment variable:
 
-`$ export COLONY_CONFIG_PATH=/path/to/file`
+`$ export TORQUE_CONFIG_PATH=/path/to/file`
 
 The different parameters may also be provided as environment variables instead of using the config file:
 
 ```bash
-export COLONY_TOKEN = xxxzzzyyy
-export COLONY_SPACE = demo_space
+export TORQUE_TOKEN = xxxzzzyyy
+export TORQUE_SPACE = demo_space
 # Optional
-export COLONY_ACCOUNT = MYACCOUNT
+export TORQUE_ACCOUNT = MYACCOUNT
 ```
 
 ### Additional environment variables
 
-It is possible to switch the client to different Colony instance setting custom API host name
+It is possible to switch the client to different Torque instance setting custom API host name
 
 ```bash
 export TORQUE_HOSTNAME = "torque.example.com"
@@ -254,7 +254,7 @@ Result of the command is a Sandbox ID.
 **Example**:
 
 ```bash
-torque sb start MyBlueprint --inputs "CS_COLONY_TOKEN=ABCD, IAM_ROLE=s3access-profile, BUCKET_NAME=abc"
+torque sb start MyBlueprint --inputs "CS_TORQUE_TOKEN=ABCD, IAM_ROLE=s3access-profile, BUCKET_NAME=abc"
 
 ybufpamyok03c11
 ```

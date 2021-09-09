@@ -11,7 +11,7 @@
 
 ![quali](quali.png)
 
-## Cloudshell Torque CLI
+## Quali Torque CLI
 
 Torque CLI is a Command Line interface tool for CloudShell Torque.
 

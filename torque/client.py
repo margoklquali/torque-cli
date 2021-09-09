@@ -73,7 +73,7 @@ class TorqueClient(object):
         return resp.json().get("access_token", "")
 
     def longtoken(self):
-        url_longtoken = urljoin(self.base_url, f"token/longtoken")
+        url_longtoken = urljoin(self.base_url, "token/longtoken")
         longtoken_resp = self.session.post(url_longtoken)
         return longtoken_resp.json().get("access_token", "")
 

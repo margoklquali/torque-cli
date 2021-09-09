@@ -41,7 +41,7 @@ Or if you want to install it for your user:
 
 In order to allow the CLI tool to authenticate with Torque you must provide several parameters:
 * *Token* The easiest way to generate a token is via the Torque UI. Navigate to *Settings (in your space) -> Integrations ->
-click “Connect” under any of the CI tools -> click “New Token”* to get an API token. Alternatively, a token can be generated using 
+click “Connect” under any of the CI tools -> click “New Token”* to get an API token. Alternatively, a token can be generated using
 ```torque configure set (--login|-l)``` command
 * *Space* The space in the Torque to use which is mapped to the Git repo you are using
 * *Account* (optional) providing the account name (appearing as the subdomain in your Torque URL,

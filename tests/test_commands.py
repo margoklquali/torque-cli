@@ -123,6 +123,7 @@ class TestConfigureCommand(unittest.TestCase):
     def test_base_help_usage_line(self):
         expected_usage = """usage:
         torque configure set
+        torque configure login
         torque configure list
         torque configure remove <profile>
         torque configure [--help|-h]"""
@@ -135,7 +136,7 @@ class TestConfigureCommand(unittest.TestCase):
     def test_actions_table(self):
         args = "configure list".split()
         command = ConfigureCommand(command_args=args)
-        expected_actions = ["set", "list", "remove"]
+        expected_actions = ["set", "list", "remove", "login"]
         for action in command.get_actions_table():
             self.assertIn(action, expected_actions)
 

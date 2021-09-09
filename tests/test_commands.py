@@ -122,8 +122,7 @@ class TestSandboxCommand(unittest.TestCase):
 class TestConfigureCommand(unittest.TestCase):
     def test_base_help_usage_line(self):
         expected_usage = """usage:
-        torque configure set
-        torque configure login
+        torque configure set [--login|-l]
         torque configure list
         torque configure remove <profile>
         torque configure [--help|-h]"""

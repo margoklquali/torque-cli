@@ -2,16 +2,17 @@ from .base import Resource, ResourceManager
 
 
 class Blueprint(Resource):
-    def __init__(self, manager: ResourceManager, name: str, url: str):
+    def __init__(self, manager: ResourceManager, name: str, url: str, enabled: bool):
         super(Blueprint, self).__init__(manager)
 
         self.name = name
         self.url = url
+        self.enabled = enabled
 
     @classmethod
     def json_deserialize(cls, manager: ResourceManager, json_obj: dict):
         try:
-            bp = Blueprint(manager, json_obj["blueprint_name"], json_obj["url"])
+            bp = Blueprint(manager, json_obj["blueprint_name"], json_obj["url"], json_obj.get("enabled", None))
         except KeyError as e:
             raise NotImplementedError(f"unable to create object. Missing keys in Json. Details: {e}")
 

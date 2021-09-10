@@ -2,6 +2,7 @@
    "blueprint_name":"Dev Environment",
    "description":"A dev environment for both local and offshore teams",
    "url":"https://api.github.com/repos/QualiSystemsLab/colony-demo-space/contents/blueprints/Dev Environment.yaml?ref=master",
+   "enabled":true,
    "source":{
       "branch":"master",
       "commit":""

@@ -40,7 +40,8 @@ class TestBaseCommand(unittest.TestCase):
 class TestBlueprintCommand(unittest.TestCase):
     def test_base_help_usage_line(self):
         expected_usage = """usage:
-        torque (bp | blueprint) validate <name> [options]
+        torque (bp | blueprint) list
+        torque (bp | blueprint) validate <name> [--branch <branch>] [--commit <commitId>]
         torque (bp | blueprint) [--help]"""
 
         with self.assertRaises(DocoptExit) as ctx:
@@ -52,13 +53,17 @@ class TestBlueprintCommand(unittest.TestCase):
         args = "bp validate test".split()
         command = BlueprintsCommand(command_args=args)
 
-        for action in ["validate"]:
+        for action in ["list", "validate"]:
             self.assertIn(action, command.get_actions_table())
 
     def test_do_validate_commit_only(self):
         args = "bp validate test --commit abc123".split()
         command = BlueprintsCommand(command_args=args)
         self.assertRaises(DocoptExit, command.do_validate)
+
+    def test_do_list(self):
+        args = "bp list".split()
+        BlueprintsCommand(command_args=args)
 
 
 class TestSandboxCommand(unittest.TestCase):

@@ -1,4 +1,4 @@
-# Torque CLI
+# Quali Torque CLI
 
 [![Coverage Status](https://coveralls.io/repos/github/QualiTorque/torque-cli/badge.svg?branch=master)](https://coveralls.io/github/QualiTorque/torque-cli?branch=master)
 [![CI](https://github.com/QualiTorque/torque-cli/workflows/CI/badge.svg)](https://github.com/QualiTorque/torque-cli/actions?query=workflow%3ACI)
@@ -11,11 +11,10 @@
 
 ![quali](quali.png)
 
-## Quali Torque CLI
+## Intro
 
-Torque CLI is a Command Line interface tool for CloudShell Torque.
-
-The main functionality this tool currently provides is validation of Torque Blueprints and launching of Sandbox environments from any branch in addition to testing local changes before committing them.
+Torque CLI is the command-line tool for interacting with [Torque](https://qtorque.io), the EaaS platform.
+To learn more about Torque, visit [https://qtorque.io](https://qtorque.io).
 
 ## Why use Torque CLI
 
@@ -81,7 +80,7 @@ export TORQUE_ACCOUNT = MYACCOUNT
 
 ### Additional environment variables
 
-It is possible to switch the client to different Torque instance setting custom API host name
+It is possible to switch the client to different Torque instance setting custom API endpoint:
 
 ```bash
 export TORQUE_HOSTNAME = "torque.example.com"
@@ -187,7 +186,7 @@ specific point in time by setting _--commit_:
 
     `$ torque bp validate MyBlueprint --branch dev --commit fb88a5e3275q5d54697cff82a160a29885dfed24`
 
-### Testing Local Changes
+### Testing local changes
 
 The Torque CLI can validate your Blueprints and test your Sandboxes even before you commit and push your code to a
 remote branch. It does so by creating a temporary branch on the remote repository with your local staged and even
@@ -215,7 +214,7 @@ a table describing each issue found.
 **Example:**
 
 ```bash
-$torque blueprint validate Jenkins -b master
+$ torque blueprint validate Jenkins -b master
 
 ERROR - torque.commands - Validation failed
 message                                                                      name
@@ -257,7 +256,7 @@ Result of the command is a Sandbox ID.
 **Example**:
 
 ```bash
-torque sb start MyBlueprint --inputs "CS_TORQUE_TOKEN=ABCD, IAM_ROLE=s3access-profile, BUCKET_NAME=abc"
+$ torque sb start MyBlueprint --inputs "CS_TORQUE_TOKEN=ABCD, IAM_ROLE=s3access-profile, BUCKET_NAME=abc"
 
 ybufpamyok03c11
 ```

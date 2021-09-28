@@ -16,12 +16,19 @@ class CommandInputParser:
         self.sandbox_end = SandboxEndInputParser(command_args)
         self.sandbox_status = SandboxStatusInputParser(command_args)
         self.blueprint_validate = BlueprintValidateInputParser(command_args)
+        self.configure_set = ConfigureSetInputParser(command_args)
         self.configure_remove = ConfigureRemoveInputParser(command_args)
 
 
 class InputParserBase(ABC):
     def __init__(self, command_args: Dict):
         self._args = command_args
+
+
+class ConfigureSetInputParser(InputParserBase):
+    @property
+    def login(self) -> bool:
+        return self._args["--login"]
 
 
 class ConfigureRemoveInputParser(InputParserBase):

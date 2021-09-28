@@ -56,15 +56,14 @@ class TorqueClient(object):
             finally:
                 self.session = None
 
-    @staticmethod
     def login(
+        self,
         account: str,
         email: str,
         password: str,
         session: Session = TorqueSession(),
-        endpoint: str = "https://qtorque.io/api",
     ):
-        path = urljoin(endpoint, f"accounts/{account}/login")
+        path = urljoin(self.base_url, f"accounts/{account}/login")
         payload = {"email": email, "password": password}
         resp = session.post(url=path, json=payload)
         if resp.status_code != 200:
@@ -72,6 +71,11 @@ class TorqueClient(object):
             raise Unauthorized("Login Failed")
 
         return resp.json().get("access_token", "")
+
+    def longtoken(self):
+        url_longtoken = urljoin(self.base_url, "token/longtoken")
+        longtoken_resp = self.session.post(url_longtoken)
+        return longtoken_resp.json().get("access_token", "")
 
     def request(self, endpoint: str, method: str = "GET", params: dict = None, headers: dict = None) -> Response:
         """Gets response as Json"""

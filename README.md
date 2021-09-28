@@ -41,7 +41,8 @@ Or if you want to install it for your user:
 
 In order to allow the CLI tool to authenticate with Torque you must provide several parameters:
 * *Token* The easiest way to generate a token is via the Torque UI. Navigate to *Settings (in your space) -> Integrations ->
-click “Connect” under any of the CI tools -> click “New Token”* to get an API token.
+click “Connect” under any of the CI tools -> click “New Token”* to get an API token. Alternatively, a token can be generated using
+```torque configure set (--login|-l)``` command
 * *Space* The space in the Torque to use which is mapped to the Git repo you are using
 * *Account* (optional) providing the account name (appearing as the subdomain in your Torque URL,
 e.g <https://YOURACCOUNT.qtorque.io>). This is not a mandatory value but will help generate easy links.
@@ -54,6 +55,7 @@ The config file can be easily created and managed using the interactive `torque 
 The CLI supports multiple profiles and we recommend setting up a default profile for ease of use. To use a non-default profile the _--profile_ command line flag needs to be used to specify the profile name.
 
 To add a new profile or update an existing one run ```torque configure set``` and follow the on-screen directions. First you will be able to choose the profile name. Hit enter to add/update the default profile or enter a custom profile name. If the profile exists it will be update and if it doesn't exist then a new profile will be configured.
+If you want to generate token by Torque CLI then use the ```--login|-l``` option. You will be requested to enter email and password instead of token
 
 To see all profiles run ```torque configure list``` and the command will output a table of all the profiles that are currently configured. Example output:
 ```bash

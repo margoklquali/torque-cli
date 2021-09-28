@@ -134,7 +134,7 @@ class SandboxesCommand(BaseCommand):
             # TODO move error handling to exception catch (investigate best practices of error handling)
 
             if sandbox_name is None:
-                sandbox_name_input = generate_sandbox_name(
+                sandbox_name = generate_sandbox_name(
                     blueprint_name,
                     context_branch.temp_working_branch,
                     context_branch.working_branch,
@@ -142,7 +142,7 @@ class SandboxesCommand(BaseCommand):
 
             try:
                 sandbox_id = self.manager.start(
-                    sandbox_name_input,
+                    sandbox_name,
                     blueprint_name,
                     duration,
                     context_branch.validation_branch,

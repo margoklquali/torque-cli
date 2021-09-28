@@ -3,11 +3,11 @@ import logging
 
 from docopt import DocoptExit
 
+from torque.client import TorqueClient
 from torque.commands.base import BaseCommand
 from torque.constants import TorqueConfigKeys
 from torque.exceptions import ConfigFileMissingError
 from torque.parsers.global_input_parser import GlobalInputParser
-from torque.sandboxes import SandboxesManager
 from torque.services.config import TorqueConfigProvider
 from torque.view.configure_list_view import ConfigureListView
 from torque.view.view_helper import mask_token
@@ -18,16 +18,16 @@ logger = logging.getLogger(__name__)
 class ConfigureCommand(BaseCommand):
     """
     usage:
-        torque configure set
+        torque configure set [--login|-l]
         torque configure list
         torque configure remove <profile>
         torque configure [--help|-h]
 
     options:
+        -l --login                  Retrieves an authentication token from server using account, email and password
+
         -h --help                   Show this message
     """
-
-    RESOURCE_MANAGER = SandboxesManager
 
     def get_actions_table(self) -> dict:
         return {"set": self.do_configure, "list": self.do_list, "remove": self.do_remove}
@@ -65,6 +65,9 @@ class ConfigureCommand(BaseCommand):
 
     def do_configure(self):
         config_file = GlobalInputParser.get_config_path()
+
+        login = self.input_parser.configure_set.login
+
         config_provider = TorqueConfigProvider(config_file)
         config = {}
         try:
@@ -82,7 +85,12 @@ class ConfigureCommand(BaseCommand):
         current_token = config.get(profile, {}).get(TorqueConfigKeys.TOKEN, "")
 
         # read account
-        account = input(f"Torque Account (optional) [{current_account}]: ")
+        if login:
+            account = input(f"Torque Account [{current_account}]: ")
+            if not account:  # required if login using email and password
+                return self.die("Account cannot be empty")
+        else:
+            account = input(f"Torque Account (optional) [{current_account}]: ")
         account = account or current_account
 
         # read space name
@@ -91,11 +99,26 @@ class ConfigureCommand(BaseCommand):
         if not space:
             return self.die("Space cannot be empty")
 
-        # read token
-        token = getpass.getpass(f"Torque Token [{mask_token(current_token)}]: ")
-        token = token or current_token
-        if not token:
-            return self.die("Token cannot be empty")
+        if login:
+            # read email
+            email = input("Email: ")
+            if not email:
+                return self.die("Email cannot be empty")
+
+            # read password
+            password = getpass.getpass("Password: ")
+
+            # get token
+            client = TorqueClient()
+            access_token = client.login(account, email, password)
+            client.session.init_bearer_auth(access_token)
+            token = client.longtoken()
+        else:
+            # read token
+            token = getpass.getpass(f"Torque Token [{mask_token(current_token)}]: ")
+            token = token or current_token
+            if not token:
+                return self.die("Token cannot be empty")
 
         # save user inputs
         config_provider.save_profile(profile, token, space, account)

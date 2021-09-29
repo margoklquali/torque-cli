@@ -95,6 +95,7 @@ export TORQUE_HOSTNAME = "torque.example.com"
 Torque CLI currently allows you to make two actions:
 
 - Validate a Blueprint (using the `torque bp validate` command)
+- Get a list of blueprints (via `torque bp list`)
 - Start a Sandbox (via `torque sb start`)
 
 In order to get help run:
@@ -120,8 +121,10 @@ Options:
                         You still can override config with --token/--space options.
 
 Commands:
-    bp, blueprint       validate torque Blueprints
-    sb, sandbox         start a Sandbox, end a Sandbox, get a Sandbox status or list all Sandboxes
+    bp, blueprint       validate torque blueprints
+    sb, sandbox         start sandbox, end sandbox and get its status
+    configure           set, list and remove connection profiles to torque
+
 ```
 
 You can get additional help information for a particular command by specifying *--help* flag after command name, like:

@@ -15,7 +15,8 @@ logger = logging.getLogger(__name__)
 class BlueprintsCommand(BaseCommand):
     """
     usage:
-        torque (bp | blueprint) validate <name> [options]
+        torque (bp | blueprint) list
+        torque (bp | blueprint) validate <name> [--branch <branch>] [--commit <commitId>]
         torque (bp | blueprint) [--help]
 
     options:
@@ -32,7 +33,22 @@ class BlueprintsCommand(BaseCommand):
     RESOURCE_MANAGER = BlueprintsManager
 
     def get_actions_table(self) -> dict:
-        return {"validate": self.do_validate}
+        return {"list": self.do_list, "validate": self.do_validate}
+
+    def do_list(self) -> bool:
+        try:
+            blueprint_list = self.manager.list()
+        except Exception as e:
+            logger.exception(e, exc_info=False)
+            return self.die()
+
+        result_table = []
+        for bp in blueprint_list:
+
+            result_table.append({"Name": bp.name, "Description": bp.description, "Enabled": bp.enabled})
+
+        self.message(tabulate.tabulate(result_table, headers="keys"))
+        return False
 
     def do_validate(self) -> bool:
         blueprint_name = self.input_parser.blueprint_validate.blueprint_name

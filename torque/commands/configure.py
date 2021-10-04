@@ -109,10 +109,14 @@ class ConfigureCommand(BaseCommand):
             password = getpass.getpass("Password: ")
 
             # get token
-            client = TorqueClient()
-            access_token = client.login(account, email, password)
-            client.session.init_bearer_auth(access_token)
-            token = client.longtoken()
+            try:
+                client = TorqueClient()
+                access_token = client.login(account, email, password)
+                client.session.init_bearer_auth(access_token)
+                token = client.longtoken()
+            except Exception as e:
+                logger.exception(e, exc_info=False)
+                return self.die()
         else:
             # read token
             token = getpass.getpass(f"Torque Token [{mask_token(current_token)}]: ")

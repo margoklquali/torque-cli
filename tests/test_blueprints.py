@@ -2,7 +2,7 @@ import json
 import unittest
 from unittest import mock
 
-from torque.blueprints import Blueprint
+from torque.models.blueprints import Blueprint
 
 
 class TestBlueprintJsonLoad(unittest.TestCase):
@@ -25,6 +25,20 @@ class TestBlueprintJsonLoad(unittest.TestCase):
 
     def test_bp_has_no_errors(self):
         self.assertFalse(self.blueprint.errors)
+
+
+class TestBlueprintSerialize(unittest.TestCase):
+    def test_bp_serialize(self):
+        manager = mock.Mock()
+        bp_json_file = "tests/fixtures/test_bp_serialize.json"
+        blueprint = Blueprint(manager, "Name1", "http://example.com", True)
+        json_dict = blueprint.json_serialize()
+        json_text = json.dumps(json_dict, indent=True)
+
+        with open(bp_json_file) as f:
+            expected = f.read()
+
+        self.assertEqual(expected, json_text)
 
 
 if __name__ == "__main__":

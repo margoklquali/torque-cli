@@ -1,5 +1,3 @@
-import tabulate
-
 from torque.branch.branch_context import ContextBranch
 from torque.branch.branch_utils import get_and_check_folder_based_repo, logger
 from torque.commands.base import BaseCommand
@@ -12,10 +10,11 @@ from torque.services.waiter import Waiter
 class SandboxesCommand(BaseCommand):
     """
     usage:
-        torque (sb | sandbox) start <blueprint_name> [options]
-        torque (sb | sandbox) status <sandbox_id>
+        torque (sb | sandbox) start <blueprint_name> [options] [--output=json]
+        torque (sb | sandbox) status <sandbox_id> [--output=json]
+        torque (sb | sandbox) get <sandbox_id> [--output=json [--detail]]
         torque (sb | sandbox) end <sandbox_id>
-        torque (sb | sandbox) list [--filter={all|my|auto}] [--show-ended] [--count=<N>]
+        torque (sb | sandbox) list [--filter={all|my|auto}] [--show-ended] [--count=<N>] [--output=json]
         torque (sb | sandbox) [--help]
 
     options:
@@ -57,13 +56,21 @@ class SandboxesCommand(BaseCommand):
                                         with an error) while the timeout is not reached. Default timeout is 30 minutes.
                                         The default timeout can be changed using the "timeout" flag.
 
+       -o --output=json                 Yield output in JSON format
+
 
     """
 
     RESOURCE_MANAGER = SandboxesManager
 
     def get_actions_table(self) -> dict:
-        return {"status": self.do_status, "start": self.do_start, "end": self.do_end, "list": self.do_list}
+        return {
+            "status": self.do_status,
+            "start": self.do_start,
+            "end": self.do_end,
+            "list": self.do_list,
+            "get": self.do_get,
+        }
 
     def do_list(self):
         list_filter = self.input_parser.sandbox_list.filter
@@ -76,22 +83,10 @@ class SandboxesCommand(BaseCommand):
             logger.exception(e, exc_info=False)
             return self.die()
 
-        result_table = []
-        for sb in sandbox_list:
+        if not show_ended:
+            sandbox_list = list(filter(lambda sb: sb.sandbox_status != "Ended", sandbox_list))
 
-            if sb.sandbox_status == "Ended" and not show_ended:
-                continue
-
-            result_table.append(
-                {
-                    "Sandbox ID": sb.sandbox_id,
-                    "Sandbox Name": sb.name,
-                    "Blueprint Name": sb.blueprint_name,
-                    "Status": sb.sandbox_status,
-                }
-            )
-
-        self.message(tabulate.tabulate(result_table, headers="keys"))
+        return True, sandbox_list
 
     def do_status(self):
         try:
@@ -101,7 +96,20 @@ class SandboxesCommand(BaseCommand):
             return self.die()
 
         status = getattr(sandbox, "sandbox_status")
-        return self.success(status)
+        return True, status
+
+    def do_get(self):
+        try:
+            detail = self.input_parser.blueprint_list.detail
+            if detail:
+                sandbox = self.manager.get_detailed(self.input_parser.sandbox_status.sandbox_id)
+            else:
+                sandbox = self.manager.get(self.input_parser.sandbox_status.sandbox_id)
+        except Exception as e:
+            logger.exception(e, exc_info=False)
+            return self.die()
+
+        return True, sandbox
 
     def do_end(self):
         try:
@@ -150,20 +158,28 @@ class SandboxesCommand(BaseCommand):
                     artifacts,
                     inputs,
                 )
-                BaseCommand.action_announcement("Starting sandbox")
-                BaseCommand.important_value("Id: ", sandbox_id)
-                BaseCommand.url(prefix_message="URL: ", message=self.manager.get_sandbox_ui_link(sandbox_id))
+                if not self.global_input_parser.output_json:
+                    self.action_announcement("Starting sandbox")
+                    self.important_value("Id: ", sandbox_id)
+                    self.url(prefix_message="URL: ", message=self.manager.get_sandbox_ui_link(sandbox_id))
 
             except Exception as e:
                 logger.exception(e, exc_info=False)
                 return self.die()
 
             wait_timeout_reached = Waiter.wait_for_sandbox_to_launch(
-                self.manager, sandbox_id, timeout, context_branch, wait
+                self,
+                self.manager,
+                sandbox_id,
+                timeout,
+                context_branch,
+                wait,
             )
 
             if wait_timeout_reached:
                 return self.die()
+            elif self.global_input_parser.output_json:
+                return True, sandbox_id
             else:
                 return self.success(sandbox_id)
 

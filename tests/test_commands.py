@@ -40,8 +40,8 @@ class TestBaseCommand(unittest.TestCase):
 class TestBlueprintCommand(unittest.TestCase):
     def test_base_help_usage_line(self):
         expected_usage = """usage:
-        torque (bp | blueprint) list
-        torque (bp | blueprint) validate <name> [--branch <branch>] [--commit <commitId>]
+        torque (bp | blueprint) list [--output=json [--detail]]
+        torque (bp | blueprint) validate <name> [--branch <branch>] [--commit <commitId>] [--output=json]
         torque (bp | blueprint) [--help]"""
 
         with self.assertRaises(DocoptExit) as ctx:
@@ -69,10 +69,11 @@ class TestBlueprintCommand(unittest.TestCase):
 class TestSandboxCommand(unittest.TestCase):
     def test_base_help_usage_line(self):
         expected_usage = """usage:
-        torque (sb | sandbox) start <blueprint_name> [options]
-        torque (sb | sandbox) status <sandbox_id>
+        torque (sb | sandbox) start <blueprint_name> [options] [--output=json]
+        torque (sb | sandbox) status <sandbox_id> [--output=json]
+        torque (sb | sandbox) get <sandbox_id> [--output=json [--detail]]
         torque (sb | sandbox) end <sandbox_id>
-        torque (sb | sandbox) list [--filter={all|my|auto}] [--show-ended] [--count=<N>]
+        torque (sb | sandbox) list [--filter={all|my|auto}] [--show-ended] [--count=<N>] [--output=json]
         torque (sb | sandbox) [--help]"""
 
         with self.assertRaises(DocoptExit) as ctx:
@@ -83,7 +84,7 @@ class TestSandboxCommand(unittest.TestCase):
     def test_actions_table(self):
         args = "sb start test".split()
         command = SandboxesCommand(command_args=args)
-        expected_actions = ["start", "end", "status", "list"]
+        expected_actions = ["start", "end", "status", "list", "get"]
         for action in command.get_actions_table():
             self.assertIn(action, expected_actions)
 
@@ -181,7 +182,7 @@ class TestConfigureCommand(unittest.TestCase):
         list_view.return_value.render.side_effect = Exception("some error")
 
         # act
-        result = command.do_list()
+        result, _ = command.do_list()
 
         # assert
         self.assertFalse(result)
@@ -209,7 +210,7 @@ class TestConfigureCommand(unittest.TestCase):
         config_provider.return_value.remove_profile.side_effect = ValueError()
 
         # act
-        result = command.do_remove()
+        result, _ = command.do_remove()
 
         # assert
         self.assertFalse(result)

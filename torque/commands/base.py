@@ -1,4 +1,4 @@
-import sys
+from typing import Any
 
 from colorama import Fore, Style
 from docopt import DocoptExit, docopt
@@ -7,6 +7,8 @@ from torque.base import ResourceManager
 from torque.client import TorqueClient
 from torque.models.connection import TorqueConnection
 from torque.parsers.command_input_parsers import CommandInputParser
+from torque.parsers.global_input_parser import GlobalInputParser
+from torque.services.output_formatter import OutputFormatter
 
 
 class BaseCommand(object):
@@ -15,6 +17,7 @@ class BaseCommand(object):
     """
 
     RESOURCE_MANAGER = ResourceManager
+    OUTPUT_FORMATTER = OutputFormatter
 
     def __init__(self, command_args: list, connection: TorqueConnection = None):
         if connection:
@@ -26,6 +29,8 @@ class BaseCommand(object):
 
         self.args = docopt(self.__doc__, argv=command_args)
         self.input_parser = CommandInputParser(self.args)
+        self.global_input_parser = GlobalInputParser(self.args)
+        self.output_formatter = self.OUTPUT_FORMATTER(self.global_input_parser)
 
     def execute(self) -> bool:
         """Finds a subcommand passed to with command in
@@ -35,7 +40,10 @@ class BaseCommand(object):
         for action in actions_table:
             if self.args.get(action, False):
                 # call action
-                return actions_table[action]()
+                success, output = actions_table[action]()
+                if output:
+                    self.output_formatter.yield_output(success, output)
+                return success
 
         # if subcommand was specified without args (actions), just show usage
         raise DocoptExit
@@ -43,60 +51,42 @@ class BaseCommand(object):
     def get_actions_table(self) -> dict:
         return {}
 
-    @staticmethod
-    def styled_text(style, message: str = "", newline=True):
-        if message:
-            sys.stdout.write(style + message)
-            sys.stdout.write(Style.RESET_ALL)
-        if newline:
-            sys.stdout.write("\n")
+    def styled_text(self, style, message: str = "", newline=True):
+        self.output_formatter.styled_text(style, message, newline)
 
-    @staticmethod
-    def error(message: str = "") -> bool:
-        BaseCommand.styled_text(Fore.RED, message)
+    def message(self, message: str = "", newline=True):
+        self.output_formatter.yield_output(True, message)
+
+    def error(self, message: str = "") -> bool:
+        self.styled_text(Fore.RED, message)
         return False
 
-    @staticmethod
-    def success(message: str = "") -> bool:
-        BaseCommand.styled_text(Fore.GREEN, message)
-        return True
+    def success(self, message: str = "") -> (bool, Any):
+        self.styled_text(Fore.GREEN, message)
+        return True, None
 
-    @staticmethod
-    def die(message: str = "") -> bool:
-        if message:
-            sys.stderr.write(message)
-            sys.stderr.write("\n")
-        return False
+    def die(self, message: str = "") -> (bool, str):
+        return False, message
 
-    @staticmethod
     # Unimportant info that can be de-emphasized
-    def fyi_info(message: str = ""):
-        BaseCommand.styled_text(Style.DIM, message)
+    def fyi_info(self, message: str = ""):
+        self.styled_text(Style.DIM, message)
 
-    @staticmethod
     # Something active is being performed
-    def action_announcement(message: str = ""):
-        BaseCommand.styled_text(Fore.YELLOW, message)
+    def action_announcement(self, message: str = ""):
+        self.styled_text(Fore.YELLOW, message)
 
-    @staticmethod
     # Unimportant info that can be de-emphasized
-    def info(message: str = ""):
-        BaseCommand.styled_text(Fore.LIGHTBLUE_EX, message)
+    def info(self, message: str = ""):
+        self.styled_text(Fore.LIGHTBLUE_EX, message)
 
-    @staticmethod
     # Unimportant info that can be de-emphasized
-    def important_value(prefix_message: str = "", value: str = ""):
+    def important_value(self, prefix_message: str = "", value: str = ""):
         if prefix_message:
-            BaseCommand.styled_text(Style.DIM, prefix_message, False)
-        BaseCommand.styled_text(Fore.CYAN, value)
+            self.styled_text(Style.DIM, prefix_message, False)
+        self.styled_text(Fore.CYAN, value)
 
-    @staticmethod
-    def message(message: str = ""):
-        sys.stdout.write(message)
-        sys.stdout.write("\n")
-
-    @staticmethod
-    def url(prefix_message, message: str = ""):
+    def url(self, prefix_message, message: str = ""):
         if prefix_message:
-            BaseCommand.styled_text(Style.DIM, prefix_message, False)
-        BaseCommand.styled_text(Fore.BLUE, message)
+            self.styled_text(Style.DIM, prefix_message, False)
+        self.styled_text(Fore.BLUE, message)

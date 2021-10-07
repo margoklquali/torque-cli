@@ -1,3 +1,4 @@
+from typing import List
 from urllib.parse import urlparse
 
 from .base import Resource, ResourceManager
@@ -28,6 +29,13 @@ class Sandbox(Resource):
         # sb.__dict__ = json_obj.copy()
         return sb
 
+    def json_serialize(self) -> dict:
+        return {
+            "id": self.sandbox_id,
+            "name": self.name,
+            "blueprint_name": self.blueprint_name,
+        }
+
 
 class SandboxesManager(ResourceManager):
     resource_obj = Sandbox
@@ -53,7 +61,13 @@ class SandboxesManager(ResourceManager):
 
         return self.resource_obj.json_deserialize(self, sb_json)
 
-    def list(self, count: int = 25, filter_opt: str = "my"):
+    def get_detailed(self, sandbox_id: str) -> dict:
+        url = f"{self.SANDBOXES_PATH}/{sandbox_id}"
+        sb_json = self._get(url)
+
+        return sb_json
+
+    def list(self, count: int = 25, filter_opt: str = "my") -> List[Sandbox]:
 
         filter_params = {"count": count, "filter": filter_opt}
         list_json = self._list(path=self.SANDBOXES_PATH, filter_params=filter_params)

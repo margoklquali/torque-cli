@@ -70,4 +70,4 @@ New version available: {latest_version}
 Run 'pip install --upgrade torque-cli' to get the latest version
 ================================================================
 """
-        BaseCommand.message(message)
+        BaseCommand([]).message(message)

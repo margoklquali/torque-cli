@@ -41,3 +41,7 @@ class GlobalInputParser:
     @staticmethod
     def get_config_path() -> str:
         return os.environ.get("TORQUE_CONFIG_PATH", None)
+
+    @property
+    def output_json(self) -> bool:
+        return self._args.get("--output", None) == "json"

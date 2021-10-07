@@ -5,6 +5,7 @@ from unittest.mock import Mock, patch
 import torque.commands.sb
 import torque.services.waiter
 from torque.branch import branch_utils
+from torque.commands.base import BaseCommand
 from torque.constants import DEFAULT_TIMEOUT, FINAL_SB_STATUSES, UNCOMMITTED_BRANCH_NAME
 from torque.exceptions import BadBlueprintRepo
 
@@ -16,6 +17,7 @@ class TestStashLogicFunctions(unittest.TestCase):
         self.check_repo_for_errors = branch_utils.check_repo_for_errors
         self.wait_before_delete = torque.services.waiter.Waiter.wait_for_sandbox_to_launch
         self.debug_output_about_repo_examination = branch_utils.debug_output_about_repo_examination
+        self.command = BaseCommand([])
 
         self.initialize_mock_vars()
 
@@ -134,6 +136,7 @@ class TestStashLogicFunctions(unittest.TestCase):
             self.sandbox.sandbox_status = final_stage
             start_time = datetime.now()
             self.wait_before_delete(
+                self.command,
                 self.sb_manager,
                 self.sandbox_id,
                 DEFAULT_TIMEOUT,
@@ -154,6 +157,7 @@ class TestStashLogicFunctions(unittest.TestCase):
 
         # Act:
         timeout_reached = self.wait_before_delete(
+            self.command,
             self.sb_manager,
             self.sandbox_id,
             1,
@@ -182,6 +186,7 @@ class TestStashLogicFunctions(unittest.TestCase):
 
         # Act:
         timeout_reached = self.wait_before_delete(
+            self.command,
             self.sb_manager,
             self.sandbox_id,
             0,

@@ -63,3 +63,6 @@ class Resource(object):
     @classmethod
     def json_deserialize(cls, manager: ResourceManager, json_obj: dict):
         pass
+
+    def json_serialize(self) -> dict:
+        pass

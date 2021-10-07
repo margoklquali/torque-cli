@@ -45,7 +45,7 @@ class GitMagicTests(unittest.TestCase):
 
     @patch("torque.utils.BlueprintRepo.is_current_branch_synced")
     @patch.object(branch_utils, "create_remote_branch")
-    @patch("torque.blueprints.BlueprintsManager.validate")
+    @patch("torque.models.blueprints.BlueprintsManager.validate")
     @patch.object(branch_context, "delete_temp_remote_branch")
     @patch("pkg_resources.get_distribution")
     @patch("torque.shell.BootstrapHelper.get_connection_params")
@@ -74,7 +74,7 @@ class GitMagicTests(unittest.TestCase):
 
     @patch("torque.utils.BlueprintRepo.is_current_branch_synced")
     @patch.object(branch_utils, "create_remote_branch")
-    @patch("torque.blueprints.BlueprintsManager.validate")
+    @patch("torque.models.blueprints.BlueprintsManager.validate")
     @patch.object(branch_context, "delete_temp_remote_branch")
     @patch("pkg_resources.get_distribution")
     @patch("torque.shell.BootstrapHelper.get_connection_params")
@@ -103,7 +103,7 @@ class GitMagicTests(unittest.TestCase):
 
     @patch("torque.utils.BlueprintRepo.is_current_branch_synced")
     @patch.object(branch_utils, "create_remote_branch")
-    @patch("torque.blueprints.BlueprintsManager.validate")
+    @patch("torque.models.blueprints.BlueprintsManager.validate")
     @patch.object(branch_context, "delete_temp_remote_branch")
     @patch("pkg_resources.get_distribution")
     @patch("torque.shell.BootstrapHelper.get_connection_params")
@@ -132,7 +132,7 @@ class GitMagicTests(unittest.TestCase):
 
     @patch("torque.utils.BlueprintRepo.is_current_branch_synced")
     @patch.object(branch_utils, "create_remote_branch")
-    @patch("torque.blueprints.BlueprintsManager.validate")
+    @patch("torque.models.blueprints.BlueprintsManager.validate")
     @patch.object(branch_context, "delete_temp_remote_branch")
     @patch("pkg_resources.get_distribution")
     @patch("torque.shell.BootstrapHelper.get_connection_params")

@@ -2,7 +2,6 @@ import unittest
 from unittest.mock import Mock, patch
 
 from tests.helpers.builders import PyPiProjectInfoBuilder, ReleaseInfoBuilder
-from tests.helpers.utils import AnyStringWith
 from torque.services.version import VersionCheckService
 
 
@@ -87,17 +86,17 @@ class VersionCheckServiceTests(unittest.TestCase):
         # assert
         self.assertEqual("1.0.1", latest_version)
 
-    @patch("torque.services.version.BaseCommand")
-    def test_show_new_version_message(self, base_command_mock):
-        # arrange
-        versions_checker = VersionCheckService("1.0.0")
-        latest_version = Mock()
-
-        # act
-        versions_checker._show_new_version_message(latest_version)
-
-        # assert
-        base_command_mock.message.assert_called_once_with(AnyStringWith(latest_version))
+    # @patch("torque.services.version.BaseCommand")
+    # def test_show_new_version_message(self, base_command_mock):
+    #     # arrange
+    #     versions_checker = VersionCheckService("1.0.0")
+    #     latest_version = Mock()
+    #
+    #     # act
+    #     versions_checker._show_new_version_message(latest_version)
+    #
+    #     # assert
+    #     base_command_mock.message.assert_called_once_with(AnyStringWith(latest_version))
 
     @patch("torque.services.version.requests")
     def test_check_for_new_version_is_safe(self, requests_mock):

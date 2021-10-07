@@ -3,7 +3,6 @@ import os
 import random
 import string
 
-from torque.commands.base import BaseCommand
 from torque.constants import DONE_STATUS, UNCOMMITTED_BRANCH_NAME
 from torque.exceptions import BadBlueprintRepo
 from torque.sandboxes import Sandbox
@@ -37,7 +36,7 @@ def check_repo_for_errors(repo: BlueprintRepo) -> None:
 
 def get_blueprint_working_branch(repo: BlueprintRepo) -> str:
     working_branch = repo.active_branch.name
-    BaseCommand.fyi_info(f"Automatically detected current working branch: {working_branch}")
+    logger.info(f"Automatically detected current working branch: {working_branch}")
     logger.debug(f"Current working branch is '{working_branch}'")
 
     return working_branch
@@ -55,9 +54,7 @@ def create_temp_branch_and_stash_if_needed(repo: BlueprintRepo, working_branch: 
     if working_branch and not repo.is_current_state_synced_with_remote():
         try:
             temp_working_branch = switch_to_temp_branch(repo, working_branch)
-            BaseCommand.info(
-                "Using your local blueprint changes (including uncommitted changes and/or untracked files)"
-            )
+            logger.info("Using your local blueprint changes (including uncommitted changes and/or untracked files)")
             logger.debug(
                 f"Using temp branch: {temp_working_branch} "
                 f"(This shall include any uncommitted changes and/or untracked files)"

@@ -22,7 +22,7 @@ class ContextBranch(object):
 
         items_in_stack_before_temp_branch_check = count_stashed_items(self.repo)
 
-        if self.branch:
+        if self.branch or self.repo is None:
             self.working_branch = self.branch
         else:
             self.working_branch = get_blueprint_working_branch(self.repo)

@@ -135,8 +135,11 @@ class SandboxesCommand(BaseCommand):
         inputs = self.input_parser.sandbox_start.inputs
         artifacts = self.input_parser.sandbox_start.artifacts
 
-        repo = get_and_check_folder_based_repo(blueprint_name)
-        self._update_missing_artifacts_and_inputs_with_default_values(artifacts, blueprint_name, inputs, repo)
+        if not branch:
+            repo = get_and_check_folder_based_repo(blueprint_name)
+            self._update_missing_artifacts_and_inputs_with_default_values(artifacts, blueprint_name, inputs, repo)
+        else:
+            repo = None
 
         with ContextBranch(repo, branch) as context_branch:
             # TODO move error handling to exception catch (investigate best practices of error handling)

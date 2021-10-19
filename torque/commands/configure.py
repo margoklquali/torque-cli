@@ -24,7 +24,8 @@ class ConfigureCommand(BaseCommand):
         torque configure [--help|-h]
 
     options:
-        -l --login                  Retrieves an authentication token from server using account, email and password
+        -l --login                  Retrieves an authentication token from server using account, email and password.
+                                    Does not work for SSO
 
         -h --help                   Show this message
     """

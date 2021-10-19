@@ -30,6 +30,12 @@ class Blueprint(Resource):
             "enabled": self.enabled,
         }
 
+    def table_serialize(self) -> dict:
+        return {
+            "name": self.name,
+            "enabled": self.enabled,
+        }
+
 
 class BlueprintsManager(ResourceManager):
     resource_obj = Blueprint

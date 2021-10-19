@@ -64,15 +64,13 @@ class OutputFormatter:
     def format_table(self, output: list) -> str:
         result_table = []
         for line in output:
-            result_table.append(line.json_serialize() if callable(getattr(line, "json_serialize", None)) else line)
-            # TODO: json_serialize must be replaced
+            result_table.append(line.table_serialize() if callable(getattr(line, "json_serialize", None)) else line)
 
         return tabulate.tabulate(result_table, headers="keys")
 
     def format_object_default(self, output: Any) -> str:
         result_table = []
-        # TODO: json_serialize must be replaced
-        for (k, v) in output.json_serialize().items():
+        for (k, v) in output.table_serialize().items():
             result_table.append([k, v])
 
         return tabulate.tabulate(result_table)

@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 class BlueprintsCommand(BaseCommand):
     """
     usage:
-        torque (bp | blueprint) list [--output=json [--detail]]
+        torque (bp | blueprint) list [--output=json | --output=json --detail]
         torque (bp | blueprint) validate <name> [--branch <branch>] [--commit <commitId>] [--output=json]
         torque (bp | blueprint) [--help]
 

@@ -36,6 +36,9 @@ class Sandbox(Resource):
             "blueprint_name": self.blueprint_name,
         }
 
+    def table_serialize(self) -> dict:
+        return self.json_serialize()
+
 
 class SandboxesManager(ResourceManager):
     resource_obj = Sandbox

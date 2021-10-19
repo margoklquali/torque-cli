@@ -66,3 +66,6 @@ class Resource(object):
 
     def json_serialize(self) -> dict:
         pass
+
+    def table_serialize(self) -> dict:
+        pass

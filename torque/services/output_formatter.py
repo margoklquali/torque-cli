@@ -14,7 +14,7 @@ class OutputFormatter:
             self.format_str = self.format_json_str
             self.format_list = self.format_json_list
             self.format_object = self.format_json_object
-            self.styled_text = lambda _: None
+            self.styled_text = lambda style, message, newline: None
         else:
             self.format_str = self.format_default_str
             self.format_list = self.format_table

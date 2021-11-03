@@ -157,7 +157,7 @@ class TestGlobalInputParser(unittest.TestCase):
 
         # assert
         self.assertIsNone(debug)
-    
+
     def test_get_disable_version_check_from_args(self):
         # arrange
         disable_version_check_mock = Mock()

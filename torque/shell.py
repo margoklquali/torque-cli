@@ -1,5 +1,5 @@
 """
-Usage: torque [--space=<space>] [--token=<token>] [--account=<account>] [--profile=<profile>] [--help] [--debug] 
+Usage: torque [--space=<space>] [--token=<token>] [--account=<account>] [--profile=<profile>] [--help] [--debug]
               [--disable-version-check] <command> [<args>...]
 
 Options:

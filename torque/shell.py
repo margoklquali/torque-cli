@@ -1,5 +1,5 @@
 """
-Usage: torque [--space=<space>] [--token=<token>] [--account=<account>] [--profile=<profile>] [--help] [--debug]
+Usage: torque [--space=<space>] [--token=<token>] [--account=<account>] [--profile=<profile>] [--help] [--debug] [--disable-version-check]
               <command> [<args>...]
 
 Options:
@@ -87,7 +87,8 @@ def main():
     input_parser = GlobalInputParser(args)
 
     # Check for new version
-    VersionCheckService(version).check_for_new_version_safely()
+    if not input_parser.disable_version_check:
+        VersionCheckService(version).check_for_new_version_safely()
 
     level = logging.DEBUG if input_parser.debug else logging.WARNING
     logging.basicConfig(format="%(levelname)s - %(message)s", level=level)

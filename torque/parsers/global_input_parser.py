@@ -29,6 +29,10 @@ class GlobalInputParser:
     @property
     def debug(self) -> str:
         return self._args.get("--debug", None)
+    
+    @property
+    def disable_version_check(self) -> str:
+        return self._args.get("--disable-version-check", None)
 
     @property
     def command(self) -> str:

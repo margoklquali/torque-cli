@@ -11,7 +11,7 @@ from torque.shell import BootstrapHelper
 class MainShellTest(unittest.TestCase):
     def setUp(self) -> None:
         self.main_doc = shell.__doc__
-        self.base_usage = """Usage: torque [--space=<space>] [--token=<token>] [--account=<account>] [--profile=<profile>] [--help] [--debug]
+        self.base_usage = """Usage: torque [--space=<space>] [--token=<token>] [--account=<account>] [--profile=<profile>] [--help] [--debug] [--disable-version-check]
               <command> [<args>...]"""
 
     def test_show_base_usage_line(self):

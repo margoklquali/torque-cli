@@ -50,10 +50,11 @@ class ConfigureSetInputParser(InputParserBase):
     @property
     def password(self) -> str:
         return self._args["--password"]
-    
+
     @property
     def token(self) -> str:
         return self._args["--token"]
+
 
 class ConfigureRemoveInputParser(InputParserBase):
     @property

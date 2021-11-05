@@ -46,7 +46,6 @@ class ConfigureCommand(BaseCommand):
         return {"set": self.do_configure, "list": self.do_list, "remove": self.do_remove}
 
     def do_list(self):
-        config = None
         try:
             config_file = GlobalInputParser.get_config_path()
             config = TorqueConfigProvider(config_file).load_all()
@@ -97,11 +96,13 @@ class ConfigureCommand(BaseCommand):
         current_space = config.get(profile, {}).get(TorqueConfigKeys.SPACE, "")
         current_token = config.get(profile, {}).get(TorqueConfigKeys.TOKEN, "")
 
-        #read account
-        login_msg = f"Torque Account [{current_account}]: " if login else f"Torque Account (optional) [{current_account}]: "
+        # read account
+        login_msg = (
+            "Torque Account [{current_account}]: " if login else f"Torque Account (optional) [{current_account}]: "
+        )
         account = self.input_parser.configure_set.account or input(login_msg)
 
-        if login and not account: # required if login using email and password
+        if login and not account:  # required if login using email and password
             return self.die("Account cannot be empty")
         account = account or current_account
 
@@ -131,7 +132,9 @@ class ConfigureCommand(BaseCommand):
                 return self.die()
         else:
             # read token
-            token = self.input_parser.configure_set.token or getpass.getpass(f"Torque Token [{mask_token(current_token)}]: ")
+            token = self.input_parser.configure_set.token or getpass.getpass(
+                f"Torque Token [{mask_token(current_token)}]: "
+            )
             token = token or current_token
             if not token:
                 return self.die("Token cannot be empty")

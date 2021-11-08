@@ -35,9 +35,9 @@ class ConfigureCommand(BaseCommand):
         -l --login                  Retrieves an authentication token from server using account, email and password.
                                     Does not work for SSO
 
-        -e --email <email>          Set email to for authentication (when --login is set)
+        -e --email <email>          Set email for authentication (when --login is set)
 
-        -p --password <password>    Set password to for authentication (when --login is set)
+        -p --password <password>    Set password for authentication (when --login is set)
 
         -h --help                   Show this message
     """

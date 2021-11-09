@@ -3,15 +3,22 @@ Usage: torque [--space=<space>] [--token=<token>] [--account=<account>] [--profi
                [--disable-version-check] <command> [<args>...]
 
 Options:
-  -h --help             Show this screen.
-  --version             Show current version
-  --space=<space>       Use a specific Torque Space, this will override any default set in the config file
-  --token=<token>       Use a specific token for authentication, this will override any default set in the
-                        config file
-  --account=<account>   [Optional] Your Torque account name. The account name is equal to your subdomain in
-                        the Torque URL. e.g. https://YOURACCOUNT.qtorque.io/
-  --profile=<profile>   Use a specific Profile section in the config file
-                        You still can override config with --token/--space options.
+  -h --help                 Show this screen.
+
+  --version                 Show current version
+
+  --space=<space>           Use a specific Torque Space, this will override any default set in the config file
+
+  --token=<token>           Use a specific token for authentication, this will override any default set in the
+                            config file
+
+  --account=<account>       [Optional] Your Torque account name. The account name is equal to your subdomain in
+                            the Torque URL. e.g. https://YOURACCOUNT.qtorque.io/
+
+  --profile=<profile>       Use a specific Profile section in the config file
+                            You still can override config with --token/--space options.
+
+  --disable-version-check   Do not check whether a new version of torque is available for download.
 
 Commands:
     bp, blueprint       validate torque blueprints

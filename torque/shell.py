@@ -1,17 +1,24 @@
 """
 Usage: torque [--space=<space>] [--token=<token>] [--account=<account>] [--profile=<profile>] [--help] [--debug]
-              <command> [<args>...]
+               [--disable-version-check] <command> [<args>...]
 
 Options:
-  -h --help             Show this screen.
-  --version             Show current version
-  --space=<space>       Use a specific Torque Space, this will override any default set in the config file
-  --token=<token>       Use a specific token for authentication, this will override any default set in the
-                        config file
-  --account=<account>   [Optional] Your Torque account name. The account name is equal to your subdomain in
-                        the Torque URL. e.g. https://YOURACCOUNT.qtorque.io/
-  --profile=<profile>   Use a specific Profile section in the config file
-                        You still can override config with --token/--space options.
+  -h --help                 Show this screen.
+
+  --version                 Show current version
+
+  --space=<space>           Use a specific Torque Space, this will override any default set in the config file
+
+  --token=<token>           Use a specific token for authentication, this will override any default set in the
+                            config file
+
+  --account=<account>       [Optional] Your Torque account name. The account name is equal to your subdomain in
+                            the Torque URL. e.g. https://YOURACCOUNT.qtorque.io/
+
+  --profile=<profile>       Use a specific Profile section in the config file
+                            You still can override config with --token/--space options.
+
+  --disable-version-check   Do not check whether a new version of torque is available for download.
 
 Commands:
     bp, blueprint       validate torque blueprints
@@ -87,7 +94,8 @@ def main():
     input_parser = GlobalInputParser(args)
 
     # Check for new version
-    VersionCheckService(version).check_for_new_version_safely()
+    if not input_parser.disable_version_check:
+        VersionCheckService(version).check_for_new_version_safely()
 
     level = logging.DEBUG if input_parser.debug else logging.WARNING
     logging.basicConfig(format="%(levelname)s - %(message)s", level=level)

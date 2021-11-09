@@ -158,6 +158,29 @@ class TestGlobalInputParser(unittest.TestCase):
         # assert
         self.assertIsNone(debug)
 
+    def test_get_disable_version_check_from_args(self):
+        # arrange
+        disable_version_check_mock = Mock()
+        args = {"--disable-version-check": disable_version_check_mock}
+        input_parser = GlobalInputParser(args)
+
+        # act
+        disable_version_check = input_parser.disable_version_check
+
+        # assert
+        self.assertEqual(disable_version_check, disable_version_check_mock)
+
+    def test_get_disable_version_check_returns_none_when_not_exist(self):
+        # arrange
+        args = {}
+        input_parser = GlobalInputParser(args)
+
+        # act
+        disable_version_check = input_parser.disable_version_check
+
+        # assert
+        self.assertIsNone(disable_version_check)
+
     def test_get_command_from_args(self):
         # arrange
         command_mock = Mock()

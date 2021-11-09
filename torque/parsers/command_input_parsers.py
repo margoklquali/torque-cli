@@ -28,8 +28,32 @@ class InputParserBase(ABC):
 
 class ConfigureSetInputParser(InputParserBase):
     @property
+    def profile(self) -> str:
+        return self._args["--profile"]
+
+    @property
     def login(self) -> bool:
         return self._args["--login"]
+
+    @property
+    def account(self) -> str:
+        return self._args["--account"]
+
+    @property
+    def space(self) -> str:
+        return self._args["--space"]
+
+    @property
+    def email(self) -> str:
+        return self._args["--email"]
+
+    @property
+    def password(self) -> str:
+        return self._args["--password"]
+
+    @property
+    def token(self) -> str:
+        return self._args["--token"]
 
 
 class ConfigureRemoveInputParser(InputParserBase):

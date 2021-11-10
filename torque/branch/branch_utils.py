@@ -101,9 +101,9 @@ def switch_to_temp_branch(repo: BlueprintRepo, defined_branch_in_file: str):
             revert_from_uncommitted_code(repo)
         if created_local_temp_branch:
             revert_from_local_temp_branch(repo, defined_branch_in_file, stashed_flag)
-            delete_temp_local_branch(repo, defined_branch_in_file)
+            delete_temp_local_branch(repo, uncommitted_branch_name)
         if created_remote_flag:
-            delete_temp_remote_branch(repo, defined_branch_in_file)
+            delete_temp_remote_branch(repo, uncommitted_branch_name)
         raise
 
     return uncommitted_branch_name

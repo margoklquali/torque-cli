@@ -57,7 +57,8 @@ class BlueprintsCommand(BaseCommand):
 
         CommandInputValidator.validate_commit_and_branch_specified(branch, commit)
 
-        repo = get_and_check_folder_based_repo(blueprint_name)
+        repo = None if branch else get_and_check_folder_based_repo(blueprint_name)
+
         with ContextBranch(repo, branch) as context_branch:
             if not context_branch:
                 return self.error("Unable to Validate BP")

@@ -5,12 +5,17 @@ from torque.parsers.command_input_validators import CommandInputValidator
 from torque.sandboxes import SandboxesManager
 from torque.services.sb_naming import generate_sandbox_name
 from torque.services.waiter import Waiter
+from signalrcore.hub_connection_builder import HubConnectionBuilder
+import json
+import time
+import logging
 
 
 class SandboxesCommand(BaseCommand):
     """
     usage:
         torque (sb | sandbox) start <blueprint_name> [options] [--output=json]
+        torque (sb | sandbox) poc
         torque (sb | sandbox) status <sandbox_id> [--output=json]
         torque (sb | sandbox) get <sandbox_id> [--output=json | --output=json --detail]
         torque (sb | sandbox) end <sandbox_id>
@@ -67,6 +72,7 @@ class SandboxesCommand(BaseCommand):
         return {
             "status": self.do_status,
             "start": self.do_start,
+            "poc": self.do_start_poc,
             "end": self.do_end,
             "list": self.do_list,
             "get": self.do_get,
@@ -119,6 +125,38 @@ class SandboxesCommand(BaseCommand):
             return self.die()
 
         return self.success("End request has been sent")
+
+    def do_start_poc(self):
+        received = False
+
+        def receive_message(args):
+            nonlocal received
+            notification = json.loads(args[0])["notification"];
+            msg = notification["msg"]
+            count = notification["details"]["count"]
+            print(msg, count)
+            if count == 0:
+                received = True
+
+        token = self.client.get_token()
+        conn = HubConnectionBuilder().with_url(
+            "http://localhost:5056/hub/devX",
+            options={
+                "verify_ssl": False,
+                "headers": {
+                    "api-key": token,
+                    "session-id": "98re89refere454"
+                }
+            }
+        ).configure_logging(logging.ERROR).build()
+        # conn.build()
+        conn.on("push", receive_message)
+        conn.start()
+        while not received:
+            time.sleep(0.1)
+
+        conn.stop()
+        return True, None
 
     def do_start(self):
         # get commands inputs

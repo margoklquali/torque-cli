@@ -56,6 +56,9 @@ class TorqueClient(object):
             finally:
                 self.session = None
 
+    def get_token(self):
+        return self.token
+
     def login(
         self,
         account: str,

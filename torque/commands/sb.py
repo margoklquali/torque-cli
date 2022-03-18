@@ -1,3 +1,5 @@
+import requests
+
 from torque.branch.branch_context import ContextBranch
 from torque.branch.branch_utils import get_and_check_folder_based_repo, logger
 from torque.commands.base import BaseCommand
@@ -9,6 +11,7 @@ from signalrcore.hub_connection_builder import HubConnectionBuilder
 import json
 import time
 import logging
+import threading
 
 
 class SandboxesCommand(BaseCommand):
@@ -128,15 +131,30 @@ class SandboxesCommand(BaseCommand):
 
     def do_start_poc(self):
         received = False
+        fake_start_url = "http://localhost:5050/api/devx-hub/poc/123456"
+
+        def run_fake_start(url):
+            print("Starting sandbox...")
+            res = requests.get(url)
+            if res.status_code == 200:
+                print("Sandbox started successfully")
+                return True
+
+            else:
+                print("Something went wrong")
+                return False
 
         def receive_message(args):
             nonlocal received
-            notification = json.loads(args[0])["notification"];
+            notification = json.loads(args[0])["notification"]
             msg = notification["msg"]
-            count = notification["details"]["count"]
+            count = notification["details"].get("count", 0)
             print(msg, count)
             if count == 0:
                 received = True
+
+        t = threading.Thread(target=run_fake_start, args=(fake_start_url,))
+        t.start()
 
         token = self.client.get_token()
         conn = HubConnectionBuilder().with_url(
@@ -154,7 +172,7 @@ class SandboxesCommand(BaseCommand):
         conn.start()
         while not received:
             time.sleep(0.1)
-
+        t.join()
         conn.stop()
         return True, None
 

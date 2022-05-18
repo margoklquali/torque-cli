@@ -30,10 +30,7 @@ class TorqueClient(object):
         if os.environ.get("TORQUE_HOSTNAME"):
             torque_host = os.environ["TORQUE_HOSTNAME"]
 
-        if account:
-            self.base_url = urljoin(f"{torque_host_prefix}{account}.{torque_host}", self.API_URL)
-        else:
-            self.base_url = urljoin(f"{torque_host_prefix}{torque_host}", self.API_URL)
+        self.base_url = urljoin(f"{torque_host_prefix}{torque_host}", self.API_URL)
 
         self.session = session
         self.space = space

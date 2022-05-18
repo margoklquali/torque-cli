@@ -27,7 +27,7 @@ class TestClient(unittest.TestCase):
             self.client.request(endpoint=endpoint, method="UPDATE")
 
     def test_if_account_provided_client_base_url_includes_it(self):
-        self.assertEqual(self.client_with_account.base_url, "https://my_account.qtorque.io/api/")
+        self.assertEqual(self.client_with_account.base_url, "https://qtorque.io/api/")
 
 
 if __name__ == "__main__":

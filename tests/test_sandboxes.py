@@ -12,13 +12,13 @@ class TestSandboxes(unittest.TestCase):
     def test_ui_link_is_properly_generated(self):
         self.assertEqual(
             self.sandboxes.get_sandbox_ui_link("blah"),
-            "https://my_account.qtorque.io/my_space/sandboxes/blah",
+            "https://qtorque.io/my_space/sandboxes/blah",
         )
 
     def test_sandbox_url_properly_generated(self):
         self.assertEqual(
             self.sandboxes.get_sandbox_url("blah"),
-            "https://my_account.qtorque.io/api/spaces/my_space/sandboxes/blah",
+            "https://qtorque.io/api/spaces/my_space/sandboxes/blah",
         )
 
 

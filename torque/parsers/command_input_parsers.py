@@ -17,6 +17,7 @@ class CommandInputParser:
         self.sandbox_status = SandboxStatusInputParser(command_args)
         self.blueprint_list = BlueprintListInputParser(command_args)
         self.blueprint_validate = BlueprintValidateInputParser(command_args)
+        self.blueprint_get = BlueprintGetInputParser(command_args)
         self.configure_set = ConfigureSetInputParser(command_args)
         self.configure_remove = ConfigureRemoveInputParser(command_args)
 
@@ -66,6 +67,12 @@ class BlueprintListInputParser(InputParserBase):
     @property
     def detail(self) -> bool:
         return self._args.get("--detail")
+
+
+class BlueprintGetInputParser(BlueprintListInputParser):
+    @property
+    def blueprint_name(self) -> bool:
+        return self._args.get("<name>")
 
 
 class BlueprintValidateInputParser(InputParserBase):

@@ -14,6 +14,7 @@ class BlueprintsCommand(BaseCommand):
     """
     usage:
         torque (bp | blueprint) list [--output=json | --output=json --detail]
+        torque (bp | blueprint) get <name> [--output=json | --output=json --detail]
         torque (bp | blueprint) validate <name> [--branch <branch>] [--commit <commitId>] [--output=json]
         torque (bp | blueprint) [--help]
 
@@ -35,7 +36,7 @@ class BlueprintsCommand(BaseCommand):
     RESOURCE_MANAGER = BlueprintsManager
 
     def get_actions_table(self) -> dict:
-        return {"list": self.do_list, "validate": self.do_validate}
+        return {"list": self.do_list, "validate": self.do_validate, "get": self.do_get}
 
     def do_list(self) -> (bool, Any):
         detail = self.input_parser.blueprint_list.detail
@@ -49,6 +50,21 @@ class BlueprintsCommand(BaseCommand):
             return self.die()
 
         return True, blueprint_list
+
+    def do_get(self) -> (bool, Any):
+        detail = self.input_parser.blueprint_get.detail
+        blueprint_name = self.input_parser.blueprint_get.blueprint_name
+
+        try:
+            if detail:
+                bp = self.manager.get_detailed(blueprint_name)
+            else:
+                bp = self.manager.get(blueprint_name)
+        except Exception as e:
+            logger.exception(e, exc_info=False)
+            return self.die()
+
+        return True, bp
 
     def do_validate(self) -> (bool, Any):
         blueprint_name = self.input_parser.blueprint_validate.blueprint_name

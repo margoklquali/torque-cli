@@ -14,7 +14,14 @@ class Blueprint(Resource):
     @classmethod
     def json_deserialize(cls, manager: ResourceManager, json_obj: dict):
         try:
-            bp = Blueprint(manager, json_obj["blueprint_name"], json_obj["url"], json_obj.get("enabled", None))
+            if "details" in json_obj:
+                json_obj = json_obj["details"]
+            bp = Blueprint(
+                manager,
+                json_obj.get("blueprint_name", None) or json_obj.get("name", None),
+                json_obj.get("url", None),
+                json_obj.get("enabled", None)
+            )
         except KeyError as e:
             raise NotImplementedError(f"unable to create object. Missing keys in Json. Details: {e}")
 
@@ -41,10 +48,15 @@ class BlueprintsManager(ResourceManager):
     resource_obj = Blueprint
 
     def get(self, blueprint_name: str) -> Blueprint:
-        url = f"catalog/{blueprint_name}"
-        bp_json = self._get(url)
-
+        bp_json = self._get_blueprint(blueprint_name)
         return Blueprint.json_deserialize(self, bp_json)
+
+    def get_detailed(self, blueprint_name):
+        return self._get_blueprint(blueprint_name)
+
+    def _get_blueprint(self, blueprint_name):
+        url = f"catalog/{blueprint_name}"
+        return self._get(url)
 
     def list(self) -> List[Blueprint]:
         url = "blueprints"

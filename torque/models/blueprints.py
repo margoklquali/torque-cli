@@ -14,6 +14,7 @@ class Blueprint(Resource):
     @classmethod
     def json_deserialize(cls, manager: ResourceManager, json_obj: dict):
         try:
+            # spec2 check
             if "details" in json_obj:
                 json_obj = json_obj["details"]
             bp = Blueprint(

@@ -1,3 +1,4 @@
+from torque.models.blueprints import BlueprintsManager
 from torque.branch.branch_context import ContextBranch
 from torque.branch.branch_utils import get_and_check_folder_based_repo, logger
 from torque.commands.base import BaseCommand
@@ -136,7 +137,12 @@ class SandboxesCommand(BaseCommand):
         artifacts = self.input_parser.sandbox_start.artifacts
 
         if not branch:
-            repo = get_and_check_folder_based_repo(blueprint_name)
+            try:
+                repo = get_and_check_folder_based_repo(blueprint_name)
+            except Exception as e:
+                logger.debug(f"Unable to detect correct blueprint repo in a working directory.\n"
+                             f"Reason {str(e)}. The default branch will be used")
+                repo = None
             self._update_missing_artifacts_and_inputs_with_default_values(artifacts, blueprint_name, inputs, repo)
         else:
             repo = None
@@ -188,21 +194,39 @@ class SandboxesCommand(BaseCommand):
 
     def _update_missing_artifacts_and_inputs_with_default_values(self, artifacts, blueprint_name, inputs, repo):
         # TODO(ddovbii): This obtaining default values magic must be refactored
-        logger.debug("Trying to obtain default values for artifacts and inputs from local git blueprint repo")
-        try:
-            if not repo.is_current_branch_synced():
-                logger.debug("Skipping obtaining values since local branch is not synced with remote")
-            else:
-                for art_name, art_path in repo.get_blueprint_artifacts(blueprint_name).items():
-                    if art_name not in artifacts and art_path is not None:
-                        logger.debug(f"Artifact `{art_name}` has been set with default path `{art_path}`")
-                        artifacts[art_name] = art_path
+        if repo is not None:
+            logger.debug("Trying to obtain default values for artifacts and inputs from local git blueprint repo")
+            try:
+                if not repo.is_current_branch_synced():
+                    logger.debug("Skipping obtaining values since local branch is not synced with remote")
+                else:
+                    for art_name, art_path in repo.get_blueprint_artifacts(blueprint_name).items():
+                        if art_name not in artifacts and art_path is not None:
+                            logger.debug(f"Artifact `{art_name}` has been set with default path `{art_path}`")
+                            artifacts[art_name] = art_path
 
-                for input_name, input_value in repo.get_blueprint_default_inputs(blueprint_name).items():
-                    if input_name not in inputs and input_value is not None:
-                        logger.debug(f"Parameter `{input_name}` has been set with default value `{input_value}`")
-                        inputs[input_name] = input_value
+                    for input_name, input_value in repo.get_blueprint_default_inputs(blueprint_name).items():
+                        if input_name not in inputs and input_value is not None:
+                            logger.debug(f"Parameter `{input_name}` has been set with default value `{input_value}`")
+                            inputs[input_name] = input_value
 
-        except Exception as e:
-            logger.debug(f"Unable to obtain default values. Details: {e}")
+            except Exception as e:
+                logger.debug(f"Unable to obtain default values. Details: {e}")
+        else:
+            bp_manager = BlueprintsManager(client=self.client)
+            blueprint_object = bp_manager.get_detailed(blueprint_name)
+            bp_props = blueprint_object.get("details", None) or blueprint_object
+
+            for k, v in bp_props.get("artifacts", {}).items():
+                if k not in artifacts and v is not None:
+                    logger.debug(f"Artifact `{k}` has been set with default path `{v}`")
+                    artifacts[k] = v
+
+            for inp in bp_props.get("inputs", []):
+                name = inp["name"]
+                default = inp.get("default_value", None)
+                if name not in inputs and default is not None:
+                    logger.debug(f"Parameter `{name}` has been set with default value `{default}")
+                    inputs[name] = default
+
         return repo

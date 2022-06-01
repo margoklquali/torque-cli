@@ -20,7 +20,7 @@ class Blueprint(Resource):
                 manager,
                 json_obj.get("blueprint_name", None) or json_obj.get("name", None),
                 json_obj.get("url", None),
-                json_obj.get("enabled", None)
+                json_obj.get("enabled", None),
             )
         except KeyError as e:
             raise NotImplementedError(f"unable to create object. Missing keys in Json. Details: {e}")

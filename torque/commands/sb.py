@@ -1,7 +1,7 @@
-from torque.models.blueprints import BlueprintsManager
 from torque.branch.branch_context import ContextBranch
 from torque.branch.branch_utils import get_and_check_folder_based_repo, logger
 from torque.commands.base import BaseCommand
+from torque.models.blueprints import BlueprintsManager
 from torque.parsers.command_input_validators import CommandInputValidator
 from torque.sandboxes import SandboxesManager
 from torque.services.sb_naming import generate_sandbox_name
@@ -139,9 +139,10 @@ class SandboxesCommand(BaseCommand):
         if not branch:
             try:
                 repo = get_and_check_folder_based_repo(blueprint_name)
-            except Exception as e:
-                logger.debug(f"Unable to detect correct blueprint repo in a working directory.\n"
-                             f"Reason {str(e)}. The default branch will be used")
+            except Exception:
+                logger.debug(
+                    "Since the branch could not be identified, the default one connected to Torque will be used"
+                )
                 repo = None
             self._update_missing_artifacts_and_inputs_with_default_values(artifacts, blueprint_name, inputs, repo)
         else:

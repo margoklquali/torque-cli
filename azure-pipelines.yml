@@ -20,17 +20,10 @@ strategy:
       python.version: '3.7'
 
 steps:
-- task: UsePythonVersion@0
+- task: StartSandbox@0
   inputs:
-    versionSpec: '$(python.version)'
-  displayName: 'Use Python $(python.version)'
-
-- script: |
-    python -m pip install --upgrade pip
-    pip install -r requirements.txt
-  displayName: 'Install dependencies'
-
-- script: |
-    pip install pytest pytest-azurepipelines
-    pytest
-  displayName: 'pytest'
+    torqueEndpoint: 'Spec2'
+    timeout: '20'
+    space: 'DBS'
+    blueprint: 'hello'
+    sandbox: 'hello 12'

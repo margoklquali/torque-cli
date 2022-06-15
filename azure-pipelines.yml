@@ -15,6 +15,6 @@ steps:
   inputs:
     torqueEndpoint: 'Torgue'
     timeout: '20'
-    space: 'DBS'
-    blueprint: 'hello'
-    sandbox: 'helloworld'
+    space: 'Sample'
+    blueprint: '[Sample]Bitnami Nginx Helm Chart'
+    sandbox: 'Grrr'
